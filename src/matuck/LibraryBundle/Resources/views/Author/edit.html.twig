@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Author edit</h1>
+{% include '::flashmessage.html.twig' %}
+    <form action="{{ path('matuck_library_author_update', { 'id': author.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <p>
+            <button type="submit">Save</button>
+        </p>
+    </form>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('matuck_library_author_show', {'id': author.getId()}) }}">
+            Back to the author page.
+        </a>
+    </li>
+</ul>
+{% endblock %}

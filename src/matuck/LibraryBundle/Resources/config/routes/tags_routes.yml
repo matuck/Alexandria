@@ -1,0 +1,24 @@
+matuck_library_tags:
+    pattern: /tags
+    defaults: { _controller: matuckLibraryBundle:Tag:index }
+matuck_library_tags_show:
+    pattern: /tags/show/{id}
+    defaults: { _controller: matuckLibraryBundle:Tag:show }
+matuck_library_tags_edit:
+    pattern: /admin/tags/edit/{id}
+    defaults: { _controller: matuckLibraryBundle:Tag:edit }
+matuck_library_tags_update:
+    pattern: /admin/tags/update/{id}
+    defaults: { _controller: matuckLibraryBundle:Tag:update }
+matuck_library_tags_new:
+    pattern: /tags/new
+    defaults: { _controller: matuckLibraryBundle:Tag:new }
+matuck_library_tags_create:
+    pattern: /tags/create
+    defaults: { _controller: matuckLibraryBundle:Tag:create }
+matuck_library_tags_delete:
+    pattern: /admin/tags/delete/{id}
+    defaults: { _controller: matuckLibraryBundle:Tag:delete }
+matuck_library_tags_merge:
+    pattern: /admin/tags/merge
+    defaults: { _controller: matuckLibraryBundle:Tag:merge }

@@ -1,0 +1,28 @@
+matuck_library_book_list_complete:
+    pattern: /book
+    defaults: { _controller: matuckLibraryBundle:Book:index }
+matuck_library_book_show:
+    pattern: /book/show/id/{id}
+    defaults: { _controller: matuckLibraryBundle:Book:show }
+matuck_library_book_tagadd:
+    pattern: /book/tagadd
+    defaults: { _controller: matuckLibraryBundle:Book:tagadd }
+    requirements: { _method: post }
+matuck_library_book_edit:
+    pattern: /admin/book/edit/id/{id}
+    defaults: { _controller: matuckLibraryBundle:Book:edit }
+matuck_library_book_update:
+    pattern: /admin/book/update/{id}
+    defaults: { _controller: matuckLibraryBundle:Book:update }
+matuck_library_book_delete:
+    pattern: /admin/book/delete/id/{id}
+    defaults: { _controller: matuckLibraryBundle:Book:delete }
+matuck_library_book_new:
+    pattern: /book/new
+    defaults: { _controller: matuckLibraryBundle:Book:new }
+matuck_library_book_rate:
+    pattern: /book/rate/{id}/{rating}
+    defaults: { _controller: matuckLibraryBundle:Book:rating }
+matuck_library_book_tagadd:
+    pattern: /book/tagadd
+    defaults: { _controller: matuckLibraryBundle:Book:tagadd }

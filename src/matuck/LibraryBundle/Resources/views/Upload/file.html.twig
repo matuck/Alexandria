@@ -1,0 +1,23 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}		
+<div class="page-header">
+            <h1>Upload New Ebook</h1>
+            {% include '::flashmessage.html.twig' %}
+        </div>
+<form action="{{ path('matuck_library_upload_submit') }}" class="form-horizontal" id="epub_details" method="post" {{ form_enctype(form) }}>
+<h2>2. Verify informations</h2>
+<div class="row">
+	<div class="span4">
+		<h3>Cover</h3>
+		{% if cover != '' %}<img src="{{ cover }}"/><p>Upload a cover below to replace the one above.</p>{{ form_widget(form.newcover) }}{% else %}<p>Please upload a cover below.</p>{{ form_widget(form.newcover) }}{% endif %}
+	</div>
+	<div class="span8">
+		{{ form_widget(form) }}
+	</div>
+	<div class="row">
+		<div style="text-align:center;"><button type="submit" class="btn btn-success" style="padding:20px 80px;"/>Submit</button></div>
+	</div>
+</div>
+</form>
+{% endblock %}

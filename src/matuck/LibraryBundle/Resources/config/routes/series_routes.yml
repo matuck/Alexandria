@@ -1,0 +1,21 @@
+matuck_library_serie:
+    pattern: /serie
+    defaults: { _controller: matuckLibraryBundle:Serie:index }
+matuck_library_serie_new:
+    pattern: /admin/serie/new
+    defaults: { _controller: matuckLibraryBundle:Serie:new }
+matuck_library_serie_create:
+    pattern: /admin/serie/create
+    defaults: { _controller: matuckLibraryBundle:Serie:create }
+matuck_library_serie_show:
+    pattern: /serie/{id}
+    defaults: { _controller: matuckLibraryBundle:Serie:show }
+matuck_library_serie_edit:
+    pattern: /admin/serie/edit/{id}
+    defaults: { _controller: matuckLibraryBundle:Serie:edit }
+matuck_library_serie_update:
+    pattern: /admin/serie/update/{id}
+    defaults: { _controller: matuckLibraryBundle:Serie:update }
+matuck_library_serie_delete:
+    pattern: /admin/serie/delete/{id}
+    defaults: { _controller: matuckLibraryBundle:Serie:delete }

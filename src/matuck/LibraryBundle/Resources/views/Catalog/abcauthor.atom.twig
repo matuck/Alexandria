@@ -1,0 +1,19 @@
+{% extends 'matuckLibraryBundle:Catalog:layout.atom.twig' %}
+{% block links %}
+  <link rel="self"  
+        href="{{ path('matuck_library_catalog_author') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="start" 
+        href="{{ path('matuck_library_catalog') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="up" 
+        href="{{ path('matuck_library_catalog') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+{% endblock %}
+  {% block id %}<id>tag:{{ path('matuck_library_catalog_author') }}</id>{% endblock %}
+  {% block entries %}
+{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_authorletter', 'letter': 'all' } %}  
+  {% for letter in range('a', 'z') %}
+{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_authorletter', 'letter': letter } %}
+  {% endfor %}
+  {% endblock %}

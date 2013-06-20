@@ -1,0 +1,9 @@
+matuck_library_search:
+    pattern: /search
+    defaults: { _controller: matuckLibraryBundle:Search:index }
+matuck_library_advancedsearch:
+    pattern: /advancedsearch
+    defaults: { _controller: matuckLibraryBundle:Search:advanced }
+matuck_library_searchhelp:
+    pattern: /search/help
+    defaults: { _controller: matuckLibraryBundle:Search:help }

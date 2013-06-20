@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="row">
+<div class="span8 offset2" style="margin-top:40px; margin-bottom:30px;"><h3>Search our library</h3>
+{% include '::flashmessage.html.twig' %}
+<div id="search-form" class="display">
+    <form action="{{ path('matuck_library_search') }}" method="GET">
+    <input class="input-xxlarge" id="search-box" type="text" placeholder="Search Author, Title, Tags, or Description" style="height:40px;" name="search" {% if search is defined %}value="{{ search }}"{% endif %}><button class="btn btn-success" style="height:50px; margin-top:-10px;" type="submit">Search</button> <a href="{{ path('matuck_library_advancedsearch') }}" class="btn btn-info" style="height:40px; margin-top:-10px;">Advanced<br>Search</a><a href="{{ path('matuck_library_searchhelp') }}" class="btn btn-info" style="height:40px; margin-top:-10px;">Search<br />Help</a>
+    </form>
+</div>
+{% if results is defined %}
+{% for doc in results %}
+        {% if doc.type == 'book' %}
+            <div class="row" class="border-bottom: 1px solid #eee; margin-bottom:10px;">
+    <h2 style="line-height: 27px;">Book:  <a style="color:#000" href="{{ path('matuck_library_book_show', { 'id': doc.objid }) }}">{{ doc.title }}</a></h2>
+    <h3 style="line-height: 27px;">Written By: <a href="{{ path('matuck_library_browse_author', { 'id': doc.authorid }) }}">{{ doc.author }}</a></h3>
+
+    {% if doc.series is defined %}
+      <h3 style="line-height: 27px;"><a style="color:#B3B3B3" href="{{ path('matuck_library_browse_serie', { 'id': doc.serieid }) }}">Book {{ doc.serieNbr }} of "{{ doc.series }}"</a></h3>
+    {% endif %}
+    <div class="span2">
+         <a href="{{ path('matuck_library_book_show', { 'id': doc.objid }) }}"><img class="cover" src="{{ coverurl(doc.objid) }}" width="114" height="162"></a>
+    </div>
+    <div class="span6">
+      {{ doc.summary|striptags|slice(0, 500) }}
+    </div>
+  </div>
+    <hr>
+        {% elseif doc.type == 'serie' %}
+    <div class="row" class="border-bottom: 1px solid #eee; margin-bottom:10px;">
+        <h2 style="line-height: 27px;">Series:  <a style="color:#000" href="{{ path('matuck_library_serie_show', { 'id': doc.objid }) }}">{{ doc.name }}</a></h2>
+    </div>
+    <hr>
+        {% else %}
+    <div class="row" class="border-bottom: 1px solid #eee; margin-bottom:10px;">
+        <h2 style="line-height: 27px;">Author:  <a style="color:#000" href="{{ path('matuck_library_author_show', { 'id': doc.objid }) }}">{{ doc.name }}</a></h2>
+    </div>
+    <hr>
+        {% endif %}
+{% endfor %}
+{% endif %}
+</div>
+</div>
+    {% endblock %}

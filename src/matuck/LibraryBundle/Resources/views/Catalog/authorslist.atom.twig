@@ -1,0 +1,33 @@
+{% extends 'matuckLibraryBundle:Catalog:layout.atom.twig' %}
+{% block links %}
+  <link rel="self"  
+        href="{{ path('matuck_library_catalog_authorletter', {'letter': letter}) }}?page={{ authors.getCurrentPage() }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="start" 
+        href="{{ path('matuck_library_catalog') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="up" 
+        href="{{ path('matuck_library_catalog_author')}}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  {% endblock %}
+  {% block title %}<title>Authors</title>{% endblock %}
+  {% block id %}<id>tag:{{ path('matuck_library_catalog_authorletter', {'letter': letter}) }}</id>{% endblock %}
+{% block pager %}
+    {% if authors.hasPreviousPage() %}
+    <link rel="previous"
+      type="application/atom+xml;profile=opds-catalog;kind=navigation"
+      title="Previous Page"
+      href="{{ path('matuck_library_catalog_authorletter', {'letter': letter}) }}?page={{ authors.getPreviousPage() }}" />
+    {% endif %}
+  {% if authors.hasNextPage() %}
+    <link rel="next"
+      type="application/atom+xml;profile=opds-catalog;kind=navigation"
+      title="Next Page" 
+      href="{{ path('matuck_library_catalog_authorletter', {'letter': letter}) }}?page={{ authors.getNextPage() }}" />
+    {% endif %}
+  {% endblock %}
+    {% block entries %}
+{% for author in authors.getCurrentPageResults() %}
+  {% include 'matuckLibraryBundle:Catalog:authorentry.atom.twig' with {'author': author } %} 
+ {% endfor %}
+{% endblock %}

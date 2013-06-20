@@ -1,0 +1,47 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Tag list</h1>
+{% include '::flashmessage.html.twig' %}
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tag in tags.getCurrentPageResults() %}
+            <tr>
+                <td><a href="{{ path('matuck_library_tags_show', { 'id': tag.id }) }}">{{ tag.name }}</a></td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('matuck_library_tags_show', { 'id': tag.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('matuck_library_tags_edit', { 'id': tag.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<div class="pagerfanta">
+    {{ pagerfanta(tags) }}
+        <div>
+    <form method="GET" action="{{ path('matuck_library_tags') }}">
+      Jump to Page:<input type="text" name="page" size="4">
+      <input type="submit" value="Go"/>
+    </form>
+    </div>
+</div>
+        <ul>
+        <li>
+            <a href="{{ path('matuck_library_tags_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

@@ -1,0 +1,86 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Flags list</h1>
+    {% include '::flashmessage.html.twig' %}
+<form action="{{ path('matuck_library_flags') }}" method="POST" id="flagfilters">
+    <input type="hidden" name="form[open]" value="0">
+    <input type="hidden" name="form[close]" value="0">
+    <input type="hidden" name="form[file]" value="0">
+    <input type="hidden" name="form[cover]" value="0">
+    <input type="hidden" name="form[metadata]" value="0">
+    <input type="hidden" name="form[copyright]" value="0">
+    <input type="hidden" name="form[other]" value="0">
+    <table style="text-align: left; width: 100%;">
+    <tr>
+      <td style="width: 100px;">
+        <div>{{ form_widget(filters_form.open) }}{{ form_label(filters_form.open, null, { 'label_attr': {'style': 'display: inline'} }) }}</div>
+        <div>{{ form_widget(filters_form.close) }}{{ form_label(filters_form.close, null, { 'label_attr': {'style': 'display: inline'} }) }}</div>
+      </td>
+      <td style="width: 130px;">
+            <div>{{ form_widget(filters_form.file) }}{{ form_label(filters_form.file, null, { 'label_attr': {'style': 'display: inline'} }) }}</div>
+            <div>{{ form_widget(filters_form.cover) }}{{ form_label(filters_form.cover, null, { 'label_attr': {'style': 'display: inline'} }) }}</div>
+            <div>{{ form_widget(filters_form.metadata) }}{{ form_label(filters_form.metadata, null, { 'label_attr': {'style': 'display: inline'} }) }}</div>
+            <div>{{ form_widget(filters_form.copyright) }}{{ form_label(filters_form.copyright, null, { 'label_attr': {'style': 'display: inline'} }) }}</div>
+            <div>{{ form_widget(filters_form.other) }}{{ form_label(filters_form.other, null, { 'label_attr': {'style': 'display: inline'} }) }}</div>
+      </td>
+      <td>
+        Date Ranges:<br/>
+        {{ form_label(filters_form.startdate, 'Start Date') }}{{ form_widget(filters_form.startdate) }}MM/DD/YYYY<br/>
+        {{ form_label(filters_form.enddate, 'End Date') }}{{ form_widget(filters_form.enddate) }}MM/DD/YYYY
+      </td>
+    </tr>
+  </table>
+{{ form_widget(filters_form) }}
+  <input type="submit" name="form[do]" value="Filter" />
+  <input type="submit" name="form[do]" value="Reset Filters" />
+</form>      
+    <table class="records_list" style="width: 100%; border: 1px #000 solid;">
+        <thead style="background-color: #334a5b; color: #FFF;">
+            <tr>
+                <th>Book Title</th>
+                <th>Type</th>
+                <th>Title</th>
+                <th>Createdat</th>
+                <th>Updatedat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities.getCurrentPageResults() %}
+            <tr {% if entity.getComplete == TRUE %}style="background-color: #999"{% endif %}>
+                <td style="border: 1px #000 solid; text-align: center;"><a href="{{ path('matuck_library_flags_show', { 'id': entity.id }) }}">{{ entity.getBook().getTitle() }}</a></td>
+                <td style="border: 1px #000 solid; text-align: center;">{{ entity.type }}</td>
+                <td style="border: 1px #000 solid;"><a href="{{ path('matuck_library_flags_show', { 'id': entity.id }) }}">{{ entity.title }}</a></td>
+                <td style="border: 1px #000 solid; text-align: center;">{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d Hi') }}{% endif %}</td>
+                <td style="border: 1px #000 solid; text-align: center;">{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d Hi') }}{% endif %}</td>
+                <td style="border: 1px #000 solid; text-align: center;">
+                <ul>
+                    <li>
+                        <a href="{{ path('matuck_library_flags_show', { 'id': entity.id }) }}">Show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('matuck_library_flags_edit', { 'id': entity.id }) }}">Edit</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('matuck_library_flags_close', { 'id': entity.id, 'redirect': 'flags' }) }}">{% if entity.getComplete() %}Reopen{% else %}Close{% endif %}</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('matuck_library_flags_delete', { 'id': entity.id, 'redirect': 'flags' }) }}">Delete</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagerfanta">
+    {{ pagerfanta(entities) }}
+        <div>
+    <form method="GET" action="{{ path('matuck_library_flags') }}">
+      Jump to Page:<input type="text" name="page" size="4">
+      <input type="submit" value="Go"/>
+    </form>
+    </div>
+</div>
+    {% endblock %}

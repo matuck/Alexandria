@@ -1,0 +1,9 @@
+matuck_library_upload:
+    pattern: /upload
+    defaults: { _controller: matuckLibraryBundle:Upload:index }
+matuck_library_upload_file:
+    pattern: /upload/file
+    defaults: { _controller: matuckLibraryBundle:Upload:file }
+matuck_library_upload_submit:
+    pattern: /upload/submit
+    defaults: { _controller: matuckLibraryBundle:Upload:submit }

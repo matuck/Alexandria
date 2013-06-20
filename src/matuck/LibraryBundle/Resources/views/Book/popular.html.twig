@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<h1>Most Popular books - Page  {{ pager.getCurrentPage() }} </h1><br/>
+{% include '::flashmessage.html.twig' %}
+<div id="book-list">
+  <div class="row">
+   <div class="span8">
+  {% for book in pager.getCurrentPageResults() %}
+           {% include 'matuckLibraryBundle::booksearchresults.html.twig'
+               with {'book': book[0]}
+            %}
+  {% endfor %}
+</div>
+  </div>
+</div>
+<div class="pagerfanta">
+    {{ pagerfanta(pager) }}
+        <div>
+    <form method="GET" action="{{ path('matuck_library_browse_new') }}">
+      Jump to Page:<input type="text" name="page" size="4">
+      <input type="submit" value="Go"/>
+    </form>
+    </div>
+</div>
+{% endblock %}

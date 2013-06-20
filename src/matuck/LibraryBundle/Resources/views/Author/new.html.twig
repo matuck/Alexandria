@@ -1,0 +1,12 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Author creation</h1>
+{% include '::flashmessage.html.twig' %}
+    <form action="{{ path('matuck_library_author_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <p>
+            <button type="submit">Save</button>
+        </p>
+    </form>
+{% endblock %}

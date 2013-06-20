@@ -1,0 +1,41 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="page-header">
+    <h1>Browse Database</h1>
+</div>
+{% include '::flashmessage.html.twig' %}
+<div class="row">
+    <div class="span8">
+        <p class="lead">Our database contains {{ bookcount }} books. This page allows you to browse and snoop this unique collection, and perhaps discover your next favourite book :)<br/>
+        If you are looking for something precise, you can also perform a <a href="{{ path('matuck_library_search') }}">search</a>
+        </p>
+        <p style="margin-top:40px;"><a class="btn btn-large btn-primary" href="{{ path('matuck_library_browse_new') }}">Browse newest first</a> <a class="btn btn-large btn-primary"  href="{{ path('matuck_library_browse_popular') }}">Browse most downloaded first</a>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="span4">
+    <h3>Browse by Author :</h3>
+        <form method="POST" action="{{ path('matuck_library_browse_redirect') }}">
+                        {{ form_widget(authorform) }}
+                <input type="submit" value="Go"/>
+        </form>
+    </div>
+    <div class="span4">
+    <h3>Browse by Series :</h3>
+        <form method="POST" action="{{ path('matuck_library_browse_redirect') }}">
+                        {{ form_widget(serieform) }}
+                <input type="submit" value="Go"/>
+
+        </form>
+    </div>
+    <div class="span4">
+        <h3>Browse by Tag :</h3>
+        <form method="POST" action="{{ path('matuck_library_browse_redirect') }}">
+                        {{ form_widget(tagform) }}
+                <input type="submit" value="Go"/>
+        </form>
+    </div>
+</div>
+{% endblock %}

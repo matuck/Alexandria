@@ -1,0 +1,20 @@
+{% extends 'matuckLibraryBundle:Catalog:layout.atom.twig' %}
+{% block links %}
+  <link rel="self"  
+        href="{{ path('matuck_library_catalog_titles') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="start" 
+        href="{{ path('matuck_library_catalog') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="up" 
+        href="{{ path('matuck_library_catalog_titles') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+{% endblock %}
+  {% block id %}<id>tag:{{ path('matuck_library_catalog_titles') }}</id>{% endblock %}
+  {% block entries %}
+{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_titlesletter', 'letter': 'all' } %}  
+{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_titlesletter', 'letter': 'number' } %}
+  {% for letter in range('a', 'z') %}
+{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_titlesletter', 'letter': letter } %}
+  {% endfor %}
+  {% endblock %}

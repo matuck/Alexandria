@@ -1,0 +1,35 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="page-header">
+    <h1>Tag: {{ tag.getName() }}</h1>
+</div>
+    <div class="row">
+      <div class="span12">
+        {% include '::flashmessage.html.twig' %}
+        </div>
+    </div>
+
+
+
+<div id="book-list">
+  <div class="row">
+   <div class="span8">
+  {% for book in books %}
+           {% include 'matuckLibraryBundle::booksearchresults.html.twig'
+               with {'book': book}
+           %}
+  {% endfor %}
+  </div>
+  </div>
+</div>
+<div class="pagerfanta">
+    {{ pagerfanta(pager) }}
+        <div>
+    <form method="GET" action="{{ path('matuck_library_tags_show', { 'id': tag.getId() }) }}">
+      Jump to Page:<input type="text" name="page" size="4">
+      <input type="submit" value="Go"/>
+    </form>
+    </div>
+</div>
+{% endblock %}

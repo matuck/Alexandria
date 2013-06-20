@@ -1,0 +1,27 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<a href="{{ path('matuck_library_homepage') }}" class="btn btn-primary">Go Home</a> <a onclick="history.back(-1)" class="btn btn-success">Go Back</a>
+<h1>{{ serie.getName() }} Books</h1><br/>
+{% include '::flashmessage.html.twig' %}
+<div id="book-list">
+  <div class="row">
+   <div class="span8">
+  {% for book in pager.getCurrentPageResults() %}
+           {% include 'matuckLibraryBundle::booksearchresults.html.twig'
+               with {'book': book}
+           %}
+  {% endfor %}
+</div>
+  </div>
+</div>
+<div class="pagerfanta">
+    {{ pagerfanta(pager) }}
+        <div>
+    <form method="GET" action="{{ path('matuck_library_browse_serie', { 'id': serie.getId() }) }}">
+      Jump to Page:<input type="text" name="page" size="4">
+      <input type="submit" value="Go"/>
+    </form>
+    </div>
+</div>
+{% endblock %}

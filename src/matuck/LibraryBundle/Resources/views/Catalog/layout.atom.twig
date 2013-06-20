@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  {% block links %}{% endblock %}
+  <link rel="search"
+        href="{{ path('matuck_library_catalog_search') }}/{searchTerms}"
+        type="application/atom+xml"
+        title="Search Catalog"  />
+  {% block pager %}{% endblock %}
+  {% block title %}<title>{{ title }}</title>{% endblock %}
+  {% block id %}{% endblock %}
+  {% block updatetime %}<updated>2013-05-19T00:00:00Z</updated>{% endblock %}
+  <author>
+    <name>{{ author }}</name>
+    <email>{{ email }}</email>
+  </author>
+
+  {% block entries %}{% endblock %}
+</feed>

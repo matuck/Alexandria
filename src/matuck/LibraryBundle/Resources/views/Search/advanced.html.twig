@@ -1,0 +1,81 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="row">
+<div class="span8 offset2" style="margin-top:40px; margin-bottom:30px;"><h3>Search our library</h3>
+{% include '::flashmessage.html.twig' %}
+<div id="advanced-search-form" class="display">
+    <form action="{{ path('matuck_library_advancedsearch') }}" method="GET">
+        <fieldset>    
+          <input type = "radio"
+                 name = "type"
+                 id = "book"
+                 value = "book"
+                 checked = "checked" /><label for = "book">Book</label>
+          
+          <input type = "radio"
+                 name = "type"
+                 id = "suthor"
+                 value = "author" /><label for = "author">Author</label>
+ 
+          <input type = "radio"
+                 name = "type"
+                 id = "series"
+                 value = "serie" /><label for = "series">Series</label>     
+      </fieldset>  
+        <div>Title: <input class="input-xxlarge title" id="search-box" type="text" placeholder="Title" style="height:40px;" name="title" {% if search is defined %}value="{{ title }}"{% endif %}></div>
+    <div>Author: <input class="input-xxlarge author" id="search-box" type="text" placeholder="Author" style="height:40px;" name="author" {% if search is defined %}value="{{ author }}"{% endif %}></div>
+    <div>Series: <input class="input-xxlarge series" id="search-box" type="text" placeholder="Series" style="height:40px;" name="series" {% if search is defined %}value="{{ series }}"{% endif %}></div>
+    <button class="btn btn-success" style="height:50px; margin-top:-10px;" type="submit">Search</button><a href="{{ path('matuck_library_searchhelp') }}" class="btn btn-info" style="height:40px; margin-top:-10px;">Search<br />Help</a>
+    </form>
+        <script type='text/javascript'>//<![CDATA[ 
+$(window).load(function(){
+$("input:radio").on("click", function () {
+    if ($(this).val() == "book") {
+        $("input:text").prop("disabled", false);
+    } else if ($(this).val() == "author") {
+        $("input:text").prop("disabled", true);
+        $("input.author").prop("disabled", false);
+    } else if ($(this).val() == "serie") {
+        $("input:text").prop("disabled", true);
+        $("input.series").prop("disabled", false);
+    }
+});
+});//]]>  
+
+</script>
+</div>
+{% if results is defined %}
+{% for doc in results %}
+        {% if doc.type == 'book' %}
+            <div class="row" class="border-bottom: 1px solid #eee; margin-bottom:10px;">
+    <h2 style="line-height: 27px;">Book:  <a style="color:#000" href="{{ path('matuck_library_book_show', { 'id': doc.objid }) }}">{{ doc.title }}</a></h2>
+    <h3 style="line-height: 27px;">Written By: <a href="{{ path('matuck_library_browse_author', { 'id': doc.authorid }) }}">{{ doc.author }}</a></h3>
+
+    {% if doc.series is defined %}
+      <h3 style="line-height: 27px;"><a style="color:#B3B3B3" href="{{ path('matuck_library_browse_serie', { 'id': doc.serieid }) }}">Book {{ doc.serieNbr }} of "{{ doc.series }}"</a></h3>
+    {% endif %}
+    <div class="span2">
+         <a href="{{ path('matuck_library_book_show', { 'id': doc.objid }) }}"><img class="cover" src="{{ coverurl(doc.objid) }}" width="114" height="162"></a>
+    </div>
+    <div class="span6">
+      {{ doc.summary|striptags|slice(0, 500) }}
+    </div>
+  </div>
+    <hr>
+        {% elseif doc.type == 'serie' %}
+    <div class="row" class="border-bottom: 1px solid #eee; margin-bottom:10px;">
+        <h2 style="line-height: 27px;">Series:  <a style="color:#000" href="{{ path('matuck_library_serie_show', { 'id': doc.objid }) }}">{{ doc.name }}</a></h2>
+    </div>
+    <hr>
+        {% else %}
+    <div class="row" class="border-bottom: 1px solid #eee; margin-bottom:10px;">
+        <h2 style="line-height: 27px;">Author:  <a style="color:#000" href="{{ path('matuck_library_author_show', { 'id': doc.objid }) }}">{{ doc.name }}</a></h2>
+    </div>
+    <hr>
+        {% endif %}
+{% endfor %}
+{% endif %}
+</div>
+</div>
+    {% endblock %}

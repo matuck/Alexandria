@@ -1,0 +1,21 @@
+<entry>
+    <id>{{ book.getId() }}</id>
+    <title>{{ book.getTitle() }}</title>
+    <updated>{{ book.getUpdatedAt()|date('M-d-Y Gi') }}</updated>
+    <author>
+      <name>{{ book.getAuthor().getName() }}</name>
+    </author>
+  <link rel="http://opds-spec.org/cover"
+        type="image/png"
+        href="{{ coverurl(book.getId()) }}"
+        title="cover thumbnail"/>
+    <link rel="http://opds-spec.org/acquisition" 
+          href="{{ path('matuck_library_page_download', {'id': book.getId()})}}"
+          type="application/epub+zip"/>
+    <content type="xhtml">
+        {% if book.serie != NULL %}
+          <div xmlns="http://www.w3.org/1999/xhtml">Series :  Book {{book.getSerieNbr() }} of "{{ book.getSerie().getName() }}"</div>
+        {% endif %}
+        <div xmlns="http://www.w3.org/1999/xhtml">{{ book.getSummary()|raw }}</div>
+    </content>
+  </entry>

@@ -1,0 +1,50 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="row">
+<div class="span8 offset2" style="margin-top:40px; margin-bottom:30px;"><h3>Search Help</h3>
+{% include '::flashmessage.html.twig' %}
+        <ul>
+            <li>
+                Wildcards
+                <ul>
+                    <li>? will matach a single character. (example: te?t will match test or text.) You can not start with a ?</li>
+                    <li>* will match multiple characters. (example: test* will match test, tests, tester, testing.) The * does not have to be at the end.  You can not start with a *</li>
+                </ul>
+            </li>
+            <li>Fuzzy search is done by placing a ~ at the end of a word/term.  You can also specify how similar it needs to be by placint a number between 0 and 1 after the ~. (example: foam~ will match foam or roam.</li>
+            <li>Proximity allows to search for words that within a certain distance from each other. To do so place your two words in quotes and put the ~ and a number after them. (example: "idiots guide"~4 would only find items where idiots and guilde would appear no more than 4 words appart.)</li>
+            <li>
+                Range this can only be used on the advanced search page.
+                <ul>
+                    <li>inclusive are done with [] (example: [alice TO joe] would find everything between including alice and joe.))</li>
+                    <li>exclusive are done wiht {} (example: [alice TO joe] would find everything between excluding alice and joe.))</li>
+                </ul>
+            </li>
+            <li>
+                Boosting a term allows you to give more relevance to a single term or phrase. A number/multiplier determines how much more relivance
+                <ul>
+                    <li>Term to boot a word/term you would put term^multiplier (example: how^4 about  you would be 4 times more likely to find entries with the word how.)</li>
+                    <li>Phrase to boot a phrase you put the phrase in quotes and then apply the boost. (example: "some phrase"^4)</li>
+                </ul>
+            </li>
+            <li>
+                Boolean
+                <ul>
+                    <li>OR (example: test OR text   would find entries with either word)</li>
+                    <li>AND (example: test AND text   would find entries with both words exist.)</li>
+                    <li>
+                        NOT (example: apache NOT php   would find entries containing apache that did not have php.)
+                        <ul>
+                            <li>Note: NOT cannot be applied with only 1 term you must have at least 2 terms</li>
+                            <li>Note: NOT operator can be replaced with a -</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Grouping you can group any of the above options by wrapping your conditions in ()</li>
+            <li>Escaping special charcters by put a \ in from of them(special characters: + - && || ! ( ) { } [ ] ^ " ~ * ? : \)</li>
+        </ul>
+</div>
+</div>
+    {% endblock %}

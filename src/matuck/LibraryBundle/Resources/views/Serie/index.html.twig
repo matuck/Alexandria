@@ -1,0 +1,37 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<h1>Series List</h1>
+{% include '::flashmessage.html.twig' %}
+<table width="100%">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for serie in pager.getCurrentPageResults() %}
+    <tr>
+      <td><a href="{{ path('matuck_library_browse_serie', {'id': serie.getId()}) }}">{{ serie.getId() }}</a></td>
+      <td><a href="{{ path('matuck_library_browse_serie', {'id': serie.getId()}) }}">{{ serie.getName() }}</a></td>
+      <td>{{ serie.getCreatedAt()|date('Y-m-d Hi') }}</td>
+      <td>{{ serie.getUpdatedAt()|date('Y-m-d Hi') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="pagerfanta">
+    {{ pagerfanta(pager) }}
+        <div>
+    <form method="GET" action="{{ path('matuck_library_serie') }}">
+      Jump to Page:<input type="text" name="page" size="4">
+      <input type="submit" value="Go"/>
+    </form>
+    </div>
+</div>
+  <a href="{{ path('matuck_library_serie_new') }}">New</a>
+
+{% endblock %}

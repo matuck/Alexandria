@@ -1,0 +1,35 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+{% include '::flashmessage.html.twig' %}
+<div class="booklist">
+    <table class="booklist">
+        <thead>
+            <tr>
+              <th>Id</th>
+              <th>Isbn</th>
+              <th>Title</th>
+              <th>Summary</th>
+              <th>Author</th>
+              <th>Is public</th>
+              <th>Created at</th>
+              <th>Updated at</th>
+            </tr>
+        </thead>
+        <tbody>
+{% for book in books %}
+           <tr class="{{ cycle(['even','odd'],loop.index) }}">
+                <td><a href="{{ path('matuck_library_book_show', { 'id': book[0].id }) }}">{{ book[0].id }}</a></td>
+                <td>{{ book[0].isbn }}</td>
+                <td>{{ book[0].title }}</td>
+                <td>{{ book[0].summary|striptags|slice(0, 250) }}</td>
+                <td>{{ book[0].author.name }}</td>
+                <td>{{ book[0].isPublic }}</td>
+                <td>{{ book[0].createdat|date('M-d-Y Gi') }}</td>
+                <td>{{ book[0].updatedat|date('M-d-Y Gi') }}</td>
+           </tr>
+{% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

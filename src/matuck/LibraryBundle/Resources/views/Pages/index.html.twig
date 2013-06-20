@@ -1,0 +1,136 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+		<div class="page-header">
+            <h1>Welcome</h1>
+            {% include '::flashmessage.html.twig' %}
+        </div>
+    <div class="row">
+		<div class="hidden-phone stats">
+          <div class="span3">
+            <div class="stat success">
+              <h2>{{ downloadcount|numbertotext }}</h2>
+              <h6>Downloads</h6>
+            </div>
+          </div>
+          <div class="span3">
+            <div class="stat danger">
+              <h2>{{ ratingcount|numbertotext }}</h2>
+              <h6>Ratings</h6>
+            </div>
+          </div>
+          <div class="span3">
+            <div class="stat warning">
+              <h2>{{ bookcount|numbertotext }}</h2>
+              <h6>Books</h6>
+            </div>
+          </div>
+          <div class="span3">
+            <div class="stat inverse">
+              <h2>{{ authorcount|numbertotext }}</h2>
+              <h6>Authors</h6>
+            </div>
+          </div>
+          </div>
+          </div>
+<h2>Featured Books</h1>
+	
+    <div class="row">
+    	<div class="span8">
+    	<div class="bs-docs-staff-featured bs-docs-example-images">
+	{% for book in featuredbooks %}
+			<a href="{{ path('matuck_library_book_show', {'id': book.id}) }}"><img class="img-polaroid" src="{{ coverurl(book.getId()) }}.png" width="112" height="162"></img></a>
+	{% endfor %}
+    </div>
+    <div class="bs-docs-user-featured bs-docs-example-images">
+	{% for book in topratedbooks %}
+			<a href="{{ path('matuck_library_book_show', {'id': book.getId()}) }}"><img class="img-polaroid" src="{{ coverurl(book.getId()) }}" width="112" height="162"></img></a>
+	{% endfor %}
+    </div>
+</div>
+	<div class="span4" id="latest-additions" style="min-height:610px">
+	  <h1><a href="{{ path('matuck_library_browse_new') }}">Newest Additions</a></h1>
+	  <div id="latest-additions-container" class="display">
+		  <table class="table table-striped">
+			  <tr><th>Title</th><th>Author</th></tr>
+			  	{% for book in newbooks %}
+			  		<tr>
+			  			<td class="book-title">
+			  				<a href="{{ path('matuck_library_book_show', {'id': book.getId()}) }}">
+			  					{{ book.getTitle() }}
+			  				</a>
+			  			</td>
+				  		<td class="book-author">
+				  			<a href="{{ path('matuck_library_browse_author', {'id': book.getAuthor().getId()}) }}">
+				  			{{ book.getAuthor().getName() }}
+				  			</a>
+				  		</td>
+			  		</tr>
+		  		{% endfor %}
+		  </table>
+	  </div>
+  	</div>
+  	<div class="span4" id="most-downloaded">
+	  	<h1><a href="{{ path('matuck_library_browse_popular') }}">Currently Trending</a></h1>
+		<div id="most-downloaded-container" class="display">
+		  <table class="table table-striped">
+			  <tr><th>Title</th><th>Author</th></tr>
+			  	{% for book in popularbooks %}
+			  		<tr>
+			  			<td class="book-title">
+			  				<a href="{{ path('matuck_library_book_show', {'id': book[0].getId()}) }}">
+			  					{{ book[0].getTitle() }}
+			  				</a>
+			  			</td>
+				  		<td class="book-author"><a href="{{ path('matuck_library_browse_author', {'id': book[0].getAuthor().getId()}) }}">{{ book[0].getAuthor().getName() }}</a></td>
+			  		</tr>
+		  		{% endfor %}
+		  </table>
+	</div>
+</div>
+  	<div class="span4" id="most-downloaded">
+	  	<h1><a href="{{ path('matuck_library_browse_popular') }}">Popular Authors</a></h1>
+		<div id="most-downloaded-container" class="display">
+		  <table class="table table-striped">
+			  <tr><th>Name</th><th># of Favourites</th></tr>
+			  	{% for author in popularauthors %}
+			  		<tr>
+			  			<td class="book-title">
+			  				<a href="{{ path('matuck_library_browse_author', {'id': author[0].getId()}) }}">
+			  					{{ author[0].getName() }}
+			  				</a>
+			  			</td>
+			  			<td class="book-author">{{ author['votecount'] }}</td>
+			  		</tr>
+		  		{% endfor %}
+		  </table>
+	</div>
+</div>
+  	<div class="span4" id="most-downloaded">
+	  	<h1>Common Tags</h1>
+		<div id="most-downloaded-container" class="display">
+		  <table class="table table-striped">
+			  <tr><th>Tags</th><th>More Tags</th></tr>
+                            {% set tagcount = populartags|length %}
+                            {% for tag in populartags%}
+                                    {% if loop.index is odd %}
+			  		<tr>
+			  			<td class="book-title">
+			  				<a href="{{ path('matuck_library_tags_show', {'id': tag[0].getId()}) }}">
+			  					{{ tag[0].getName() }}
+			  				</a>
+			  			</td>
+                                    {% else %}
+				  		<td class="book-author">
+				  			<a href="{{ path('matuck_library_tags_show', {'id': tag[0].getId()}) }}">
+			  					{{ tag[0].getName() }}
+			  				</a>
+				  		</td>
+			  		</tr>
+                                    {% endif %}
+                            {% endfor %}
+		  </table>
+	</div>
+</div>
+</div>
+{% endblock %}

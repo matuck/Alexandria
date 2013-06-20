@@ -1,0 +1,33 @@
+catalog:
+    resource: "@matuckLibraryBundle/Resources/config/routes/catalog_routes.yml"
+    prefix:   /catalog
+author:
+    resource: "@matuckLibraryBundle/Resources/config/routes/author_routes.yml"
+book:
+    resource: "@matuckLibraryBundle/Resources/config/routes/book_routes.yml"
+browse:
+    resource: "@matuckLibraryBundle/Resources/config/routes/browse_routes.yml"
+chillingdmca:
+    resource: "@matuckLibraryBundle/Resources/config/routes/chillingdmca_routes.yml"
+flags:
+    resource: "@matuckLibraryBundle/Resources/config/routes/flags_routes.yml"
+series:
+    resource: "@matuckLibraryBundle/Resources/config/routes/series_routes.yml"
+search:
+    resource: "@matuckLibraryBundle/Resources/config/routes/search_routes.yml"
+tags:
+    resource: "@matuckLibraryBundle/Resources/config/routes/tags_routes.yml"
+uploads:
+    resource: "@matuckLibraryBundle/Resources/config/routes/upload_routes.yml"
+    
+
+    
+matuck_library_homepage:
+    pattern:  /
+    defaults: { _controller: matuckLibraryBundle:Pages:index }
+matuck_library_page_download:
+    pattern: /download/{id}
+    defaults: { _controller: matuckLibraryBundle:Pages:download }
+matuck_library_page:
+    pattern: /{template}
+    defaults: { _controller: matuckLibraryBundle:Pages:templatepage }

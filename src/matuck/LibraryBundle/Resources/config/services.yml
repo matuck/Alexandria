@@ -1,0 +1,26 @@
+parameters:
+#    matuck_library.example.class: matuck\LibraryBundle\Example
+
+services:
+    matuck_library.iphash:
+        scope: request
+        class: matuck\LibraryBundle\Lib\IpHash
+        arguments: ["@request"]
+    matuck_library.nameparser:
+        class: matuck\LibraryBundle\Lib\nameparser
+    matuck_library.filehandler:
+        class: matuck\LibraryBundle\Lib\Filehandler\FileHandler
+        arguments:  [ "@service_container" ]
+    matuck_library.googlebookapi:
+        class: matuck\LibraryBundle\Lib\GoogleBookApi
+        arguments:  [ "@service_container" ]
+    matuck.twig.matuck_extension:
+        class: matuck\LibraryBundle\Twig\matuckExtension
+        arguments: 
+            fh: "@matuck_library.filehandler"
+        tags:
+            - { name: twig.extension }
+#    matuck_library.example:
+#        class: %matuck_library.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    

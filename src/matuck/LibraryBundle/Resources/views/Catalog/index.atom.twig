@@ -1,0 +1,72 @@
+{% extends 'matuckLibraryBundle:Catalog:layout.atom.twig' %}
+
+{% block links %}
+  <link rel="self"  
+        href="{{ path('matuck_library_catalog') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="start" 
+        href="{{ path('matuck_library_catalog') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+{% endblock %}
+{% block id %}<id>tag:{{ path('matuck_library_catalog') }}</id>{% endblock %}
+{% block entries %}
+  <entry>
+    <title>Newest Books</title>
+    <link rel="http://opds-spec.org/sort/new" 
+          href="{{ path('matuck_library_catalog_new') }}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>{{ latestBookDate|date("Y-m-d\TH:i:sP") }}</updated>
+    <id>catalog_root_newest</id>
+    <content type="text">Latest books</content>
+  </entry>
+
+  <entry>
+    <title>Most Downloaded</title>
+    <link rel="http://opds-spec.org/sort/new" 
+          href="{{ path('matuck_library_catalog_most') }}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>{{ latestBookDate|date("Y-m-d\TH:i:sP") }}</updated>
+    <id>catalog_root_newest</id>
+    <content type="text">Most downloaded books</content>
+  </entry>
+
+  <entry>
+    <title>Titles</title>
+    <link rel="subsection" 
+          href="{{ path('matuck_library_catalog_titles') }}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>{{ latestBookDate|date("Y-m-d\TH:i:sP") }}</updated>
+    <id>catalog_root_title</id>
+    <content type="text">All books by title.</content>
+  </entry>
+
+  <entry>
+    <title>Authors</title>
+    <link rel="subsection" 
+          href="{{ path('matuck_library_catalog_author') }}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>{{ latestAuthorDate|date("Y-m-d\TH:i:sP") }}</updated>
+    <id>catalog_root_author</id>
+    <content type="text">Authors available</content>
+  </entry>
+
+  <entry>
+    <title>Series</title>
+    <link rel="subsection" 
+          href="{{ path('matuck_library_catalog_series') }}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>{{ latestSeriesDate|date("Y-m-d\TH:i:sP") }}</updated>
+    <id>catalog_root_serie</id>
+    <content type="text">Series available</content>
+  </entry>
+  
+  <entry>
+    <title>Tags</title>
+    <link rel="subsection" 
+          href="{{ path('matuck_library_catalog_tags') }}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>{{ latestBookDate|date("Y-m-d\TH:i:sP") }}</updated>
+    <id>catalog_root_tag</id>
+    <content type="text">Tags available</content>
+  </entry>
+{% endblock %}

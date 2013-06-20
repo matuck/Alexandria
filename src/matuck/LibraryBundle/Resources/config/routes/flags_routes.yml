@@ -1,0 +1,26 @@
+matuck_library_flags:
+    pattern:  /admin/flags
+    defaults: { _controller: "matuckLibraryBundle:Flags:index" }
+matuck_library_flags_show:
+    pattern:  /flags/show/{id}
+    defaults: { _controller: "matuckLibraryBundle:Flags:show" }
+matuck_library_flags_new:
+    pattern:  /flags/new/{id}
+    defaults: { _controller: "matuckLibraryBundle:Flags:new" }
+matuck_library_flags_create:
+    pattern:  /flags/create/{id}
+    defaults: { _controller: "matuckLibraryBundle:Flags:create" }
+    requirements: { _method: post }
+matuck_library_flags_edit:
+    pattern:  /admin/flags/edit/{id}
+    defaults: { _controller: "matuckLibraryBundle:Flags:edit" }
+matuck_library_flags_update:
+    pattern:  /admin/flags/update/{id}
+    defaults: { _controller: "matuckLibraryBundle:Flags:update" }
+    requirements: { _method: post|put }
+matuck_library_flags_delete:
+    pattern:  /admin/flags/delete/{id}/{redirect}
+    defaults: { _controller: "matuckLibraryBundle:Flags:delete" }
+matuck_library_flags_close:
+    pattern: /flags/close/{id}/{redirect}
+    defaults: { _controller: matuckLibraryBundle:Flags:close }

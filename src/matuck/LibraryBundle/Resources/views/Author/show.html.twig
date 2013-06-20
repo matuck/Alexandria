@@ -1,0 +1,83 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="page-header">
+ 
+  <div class="pull-right">
+      {% if isfav %}
+          <a class="btn btn-info btn-large" href="{{ path('matuck_library_author_removefavourite', {'id': author.getId()}) }}"><i class=\'icon-heart\'></i> Favourite</a>
+      {% else %}
+          <a class="btn btn-info btn-large" href="{{ path('matuck_library_author_makefavourite', {'id': author.getId()}) }}"><i class=\'icon-heart\'></i> Favourite</a>
+      {% endif %}
+      {% if author.getTwitter()%}
+          <a class="btn btn-success btn-large" href="https://flattr.com/submit/auto?url={{ author.getTwitter() }}"><i class="icon-credit-card"></i> Donate to Author (with flattr)</a> 
+      {% endif %}
+  </div>
+
+            <h1>{{ author.getName() }}</h1>
+        </div>
+    <div class="row">
+      <div class="span12">
+        {% include '::flashmessage.html.twig' %}
+          <p>
+</p>
+        </div>
+      <div class="span6" style="min-height:150px;">
+          <p>{% if author.getBiography() == "" %} This author currently has no bio, if you would like to help expand our database and it better, you can <a href="{{ path('matuck_library_author_bio', {'id': author.getId()}) }}">Click Here</a> to add information about this author.{% else %} {{ author.getBiography()|raw }} {% endif %}</p>
+        </div>
+        <div class="stats">
+           <div class="span3">
+            <div class="stat info">
+              <h2>{{ pager.getNbResults() }}</h2>
+              <h6>Books</h6>
+            </div>
+          </div>
+          <div class="span3">
+            <div class="stat danger">
+              <h2>{{ author.getAuthorvotes()|length }}</h2>
+              <h6>Favourites</h6>
+            </div>
+          </div>
+          <div class="span3">
+            {% if author.getFacebook() == '' %}<a href="{{ path('matuck_library_author_bio', {'id': author.getId()}) }}">{% else %}<a href="{{ author.getFacebook() }}">{% endif %}
+            <div class="stat inverse">
+              <h2>Facebook</h2>
+              <h6>{% if author.getFacebook() == '' %}Update Facebook Link{% else %}Visit Facebook Page{% endif %}</h6>
+            </div>
+          </a>
+          </div>
+
+          <div class="span3">
+            {% if author.getTwitter() == '' %}<a href="{{ path('matuck_library_author_bio', {'id': author.getId()}) }}">{% else %}<a href="{{ author.getTwitter() }}">{% endif %}
+            <div class="stat purple">
+              <h2>Twitter</h2>
+              <h6>{% if author.getTwitter() == ''%}Update Twitter Link{% else %}Visit Twitter Account{% endif %}</h6>
+            </div>
+          </a>
+          </div>
+        </div>
+        </div>
+
+
+
+<div id="book-list">
+  <div class="row">
+   <div class="span8">
+  {% for book in pager.getCurrentPageResults() %}
+           {% include 'matuckLibraryBundle::booksearchresults.html.twig'
+               with {'book': book}
+           %}
+  {% endfor %}
+  </div>
+  </div>
+</div>
+<div class="pagerfanta">
+    {{ pagerfanta(pager) }}
+        <div>
+    <form method="GET" action="{{ path('matuck_library_browse_author', { 'id': author.getId() }) }}">
+      Jump to Page:<input type="text" name="page" size="4">
+      <input type="submit" value="Go"/>
+    </form>
+    </div>
+</div>
+{% endblock %}

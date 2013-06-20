@@ -1,0 +1,21 @@
+matuck_library_browse:
+    pattern: /browse
+    defaults: { _controller: matuckLibraryBundle:Pages:browse }
+matuck_library_browse_new:
+    pattern: /browse/new
+    defaults: { _controller: matuckLibraryBundle:Book:newbooks }
+matuck_library_browse_popular:
+    pattern: /browse/popular
+    defaults: { _controller: matuckLibraryBundle:Book:popular }
+matuck_library_browse_author:
+    pattern: /browse/author/{id}
+    defaults: { _controller: matuckLibraryBundle:Author:show }
+matuck_library_browse_tag:
+    pattern: /browse/tags/{id}
+    defaults: { _controller: matuckLibraryBundle:Tag:show }
+matuck_library_browse_serie:
+    pattern: /browse/serie/{id}
+    defaults: { _controller: matuckLibraryBundle:Serie:show }
+matuck_library_browse_redirect:
+    pattern: /browse/redirect
+    defaults: { _controller: matuckLibraryBundle:Pages:redirect }

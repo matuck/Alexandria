@@ -1,0 +1,14 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="page-header">
+    <h1>Upload New Ebook</h1>
+</div>
+{% include '::flashmessage.html.twig' %}
+<h2>1. Upload your epub</h2>
+<form action="{{ path('matuck_library_upload_file') }}" method="POST" id="epub_details" {{ form_enctype(form) }}>
+{{ form_widget(form) }}
+<button type="submit" name="submit" /><i class="icon icon-upload"> Upload</i></button>
+</form>
+<p><small>Legal Disclaimer: This site accepts under the DMCA and international copyright law that the uploads being made through our service are made by the copyright holder. Please do not use our service to upload copyrighted material that you dont own the rights to.</small></p>
+{% endblock %}

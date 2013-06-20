@@ -1,0 +1,30 @@
+matuck_library_author_bio:
+    pattern: /author/bio/{id}
+    defaults: { _controller: matuckLibraryBundle:Author:bio }
+matuck_library_author_show:
+    pattern: /author/{id}
+    defaults: { _controller: matuckLibraryBundle:Author:show }
+matuck_library_author_edit:
+    pattern: /admin/author/edit/{id}
+    defaults: { _controller: matuckLibraryBundle:Author:edit }
+matuck_library_author_update:
+    pattern: /admin/author/update/{id}
+    defaults: { _controller: matuckLibraryBundle:Author:update }
+matuck_library_author_new:
+    pattern: /admin/author/new
+    defaults: { _controller: matuckLibraryBundle:Author:new }
+matuck_library_author_create:
+    pattern: /admin/author/create
+    defaults: { _controller: matuckLibraryBundle:Author:create }
+matuck_library_author_merge:
+    pattern: /admin/author/merge
+    defaults: { _controller: matuckLibraryBundle:Author:merge }
+matuck_library_author_bioupdate:
+    pattern: /author/bioupdate/{id}
+    defaults: { _controller: matuckLibraryBundle:Author:bioupdate }
+matuck_library_author_makefavourite:
+    pattern: /author/makefavourite/{id}
+    defaults: { _controller: matuckLibraryBundle:Author:makefavourite }
+matuck_library_author_removefavourite:
+    pattern: /author/removefavourite/{id}
+    defaults: { _controller: matuckLibraryBundle:Author:bioupdate }

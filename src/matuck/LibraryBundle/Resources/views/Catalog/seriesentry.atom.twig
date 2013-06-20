@@ -1,0 +1,8 @@
+ <entry>
+    <title>{{ serie.getName() }}</title>
+    <link rel="http://opds-spec.org/sort/new" 
+          href="{{ path('matuck_library_catalog_seriesbooks', {'id': serie.getId()}) }}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>{{ serie.getUpdatedAt()|date('M-d-Y Gi') }}</updated>
+    <id>catalog_series_{{ serie.getId() }}</id>
+  </entry>

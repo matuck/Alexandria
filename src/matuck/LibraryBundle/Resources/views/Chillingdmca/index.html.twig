@@ -1,0 +1,43 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<h1>DMCA Takedowns List</h1>
+{% include '::flashmessage.html.twig' %}
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Book title</th>
+      <th>Book author</th>
+      <th>Dmca name</th>
+      <th>Dmca email</th>
+      <th>IP Address</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for chillingdmca in pager.getCurrentPageResults() %}
+    <tr>
+      <td><a href="{{ path('matuck_library_chillingdmca_edit', { 'id': chillingdmca.getId() }) }}">{{ chillingdmca.getId() }}</a></td>
+      <td>{{ chillingdmca.getBookTitle() }}</td>
+      <td>{{ chillingdmca.getBookAuthor() }}</td>
+      <td>{{ chillingdmca.getDmcaName() }}</td>
+      <td>{{ chillingdmca.getDmcaEmail() }}</td>
+      <td>{{ chillingdmca.getIpAddress() }}</td>
+      <td>{{ chillingdmca.getCreatedAt()|date('M-d-Y Gi') }}</td>
+      <td>{{ chillingdmca.getUpdatedAt()|date('M-d-Y Gi') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="pagerfanta">
+    {{ pagerfanta(pager) }}
+        <div>
+    <form method="GET" action="{{ path('matuck_library_chillingdmca') }}">
+      Jump to Page:<input type="text" name="page" size="4">
+      <input type="submit" value="Go"/>
+    </form>
+    </div>
+</div>
+{% endblock %}

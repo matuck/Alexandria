@@ -1,0 +1,140 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="bs-docs-social">
+  <div class="container">
+    <div class="bs-docs-social-buttons">
+      <a href='{{ path('matuck_library_page_download', {'id': book.getId()}) }}' class='btn btn-success btn-large'><i class="icon-download-alt"></i> Download Epub</a> <a href='{{ path('matuck_library_browse_author', { 'id': book.getAuthor().getId() }) }}' class='btn btn-info btn-large'><i class="icon-user"></i> Books By This Author</a>
+        </div>
+  </div>
+</div>
+
+{% if book.getFlags()|length > 0 %}
+  <table style="width: 100%; border: 1px #000 solid;">
+    <thead style="background-color: #334a5b; color: #FFF;">
+    <th style="padding: 5px 5px 5px 5px; border: 1px #000 solid; text-align: center; width:80px;">Type</th>
+    <th style="padding: 5px 5px 5px 5px; border: 1px #000 solid;">Title</th>
+    <th style="padding: 5px 5px 5px 5px; border: 1px #000 solid; width:100px;">Created</th>
+    {% if is_granted('ROLE_ADMIN') %}
+      <th style="padding: 5px 5px 5px 5px; border: 1px #000 solid; text-align: center; width:110px;">Admin</th>
+    {% endif %}
+    </thead>
+    <tbody>
+      {% for flag in book.getFlags() %}
+      <tr {% if flag.getComplete() %}style="background-color: #999" {% endif %}>
+        <td style="border: 1px #000 solid; text-align: center;"><a href="{{ path('matuck_library_flags_show', { 'id': flag.getId() }) }}">{{ flag.getType() }}</a></td>
+        <td style="border: 1px #000 solid;"><a href="{{ path('matuck_library_flags_show', { 'id': flag.getId() }) }}">{{ flag.getTitle() }}</a></td>
+        <td style="border: 1px #000 solid; text-align: center;"><a href="{{ path('matuck_library_flags_show', { 'id': flag.getId() }) }}">{{ flag.getCreatedat()|date("m/d/Y") }}</a></td>
+        {% if is_granted('ROLE_ADMIN') %}
+        <td style="border: 1px #000 solid; text-align: center;"><a href="{{ path('matuck_library_flags_close', { 'id': flag.getId(), 'redirect': 'book' }) }}">{% if flag.getComplete() %} Reopen {% else %} Close {% endif %}</a> | <a href="{{ path('matuck_library_flags_delete', { 'id': flag.getId(), 'redirect': 'book' }) }}">Delete</a></td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+  <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+         <ul class="nav nav-list bs-docs-sidenav">
+          <li><img class="cover" src="{{ coverurl(book.getId())}}" width="186" height="272"></li>
+          <li><a href="{{ path('matuck_library_page_download', {'id': book.getId()}) }}"><i class="icon-download-alt"></i> Download Epub</a></li>
+          {# <li><a href="#"><i class="icon-refresh"></i> Convert to Mobi</a></li> #}
+          <li><a href="{{ amazonUrl }}"><i class="icon-shopping-cart"></i> Buy Book</a></li>
+          <li><a href="{{ path('matuck_library_browse_author', { 'id': book.getAuthor().getId() }) }}"><i class="icon-user"></i> Books By This Author</a></li>
+          <li><a href="{{ path('matuck_library_flags_new', { 'id': book.getId() }) }}"><i class="icon-flag"></i> Flag Book</a></li>
+          <li><a href="{{ path('matuck_library_chillingdmca_new', { 'id': book.getId() }) }}"><i class="icon-fire"></i> DMCA Takedown</a></li>
+          {% if is_granted('ROLE_ADMIN') %}
+             <li><a href="{{ path('matuck_library_book_edit', { 'id': book.getId() }) }}"><i class="icon-pencil"></i> Edit</a></li>
+             <li><a href="{{ path('matuck_library_book_delete', { 'id': book.getId() }) }}"><i class="icon-remove-sign"></i> Delete</a></li>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="span9">
+
+
+
+        <!-- Download
+        ================================================== -->
+        <section id="book-info">
+          <div class="page-header">
+            <span class="rating pull-right">
+                {% if book.getRated() == 5 %}
+                <a class="star selected" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 5 }) }}"></a>
+                {% else %}
+                <a class="star" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 5 }) }}"></a>
+                {% endif %}
+                {% if book.getRated() == 4 %}
+                <a class="star selected" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 4 }) }}"></a>
+                {% else %}
+                <a class="star" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 4 }) }}"></a>
+                {% endif %}
+                {% if book.getRated() == 3 %}
+                <a class="star selected" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 3 }) }}"></a>
+                {% else %}
+                <a class="star" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 3 }) }}"></a>
+                {% endif %}
+                {% if book.getRated() == 2 %}
+                <a class="star selected" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 2 }) }}"></a>
+                {% else %}
+                <a class="star" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 2 }) }}"></a>
+                {% endif %}
+                {% if book.getRated() == 1 %}
+                <a class="star selected" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 1 }) }}"></a>
+                {% else %}
+                <a class="star" href="{{ path('matuck_library_book_rate', { 'id': book.id, 'rating': 1 }) }}"></a>
+                {% endif %}
+        </span>
+            <h1>{{ book.getTitle()|raw }}<small>{{ book.getAuthor().getName() }}</small></h1>
+            {% include '::flashmessage.html.twig' %}
+          <p class="lead"><i class="icon-quote-left icon-4x pull-left icon-muted"></i>{{ book.getSummary()|raw }}</p>
+          <p>ISBN: {{ book.getIsbn() }}</p>
+          <div class="row">
+             {% if book.getSerie %}
+            <div class="span4">
+              <h3>More From Series</h3>
+              <p>This is book {{ book.getSerieNbr }} of "{{ book.getSerie().getName() }}"</p>
+              <p><a class="btn btn-large btn-primary" href="{{ path('matuck_library_browse_serie', { 'id': book.getSerie().getId()}) }}">View Series</a></p>
+            </div>
+             {% endif %}
+            <div class="span4">
+              <h3>More From Author</h3>
+              <p>You can find more books by {{ book.getAuthor().getName() }}</p>
+              <p><a class="btn btn-large" href="{{ path('matuck_library_browse_author', { 'id': book.getAuthor().getId() }) }}">View Author</a></p>
+            </div>
+          </div>
+        </section>
+
+
+
+        <!-- File structure
+        ================================================== -->
+        <section id="tags">
+          <div class="page-header">
+            <h2>Tags</h2>
+          </div>
+        <form action="{{ path('matuck_library_book_tagadd') }}" method="POST" id="book_tags">
+          <p class="lead">
+          {% if book.tags %}
+              
+           {% for tag in book.getTags()%}
+                  {% if is_granted('ROLE_ADMIN') %}
+                    <input type="checkbox" name="form[removetag][]" value="{{ tag.getName() }}"><a class="badge badge-success" href="{{ path('matuck_library_browse_tag', { 'id': tag.getId() }) }}">{{ tag.getName() }}</a> 
+                  {% else %}
+                    <a class="badge badge-success" href="{{ path('matuck_library_browse_tag', { 'id': tag.getId() }) }}">{{ tag.getName() }}</a>
+                  {% endif %}
+           {% endfor %}
+         {% endif %} </p>
+
+          <input type="hidden" id="book_id" name="form[book_id]" value="{{ book.getId() }}"/>
+          <table>
+              <tr><td><input id="tags" size="40" name="form[tags]" /></td><td><button type="submit" value="Add Tags" class="primary">Submit</button></td></tr>
+              <tr><td colspan="2" style="font-size: 80%;">Please input your tags seperated by commas. Last tag needs to be "nospam".</td></tr>
+          </table>
+      </form><br />
+      <input type="hidden" name="IL_IN_TAG" value="1"/>
+        </section>
+      </div>
+    </div>
+{% endblock %}

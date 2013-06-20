@@ -1,0 +1,33 @@
+{% extends 'matuckLibraryBundle:Catalog:layout.atom.twig' %}
+{% block links %}
+  <link rel="self"  
+        href="{{ path('matuck_library_catalog_seriesbooks', {'id': series.getId()}) }}?page={{ books.getCurrentPage() }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="start" 
+        href="{{ path('matuck_library_catalog') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="up" 
+        href="{{ path('matuck_library_catalog_series')}}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  {% endblock %}
+  {% block title %}<title>Books in the  {{ series.getName() }} series</title>{% endblock %}
+  {% block id %}<id>tag:{{ path('matuck_library_catalog_seriesbooks', {'id': series.getId()}) }}</id>{% endblock %}
+{% block pager %}
+    {% if books.hasPreviousPage() %}
+    <link rel="previous"
+      type="application/atom+xml;profile=opds-catalog;kind=navigation"
+      title="Previous Page"
+      href="{{ path('matuck_library_catalog_seriesbooks', {'id': series.getId()}) }}?page={{ books.getPreviousPage() }}" />
+    {% endif %}
+  {% if books.hasNextPage() %}
+    <link rel="next"
+      type="application/atom+xml;profile=opds-catalog;kind=navigation"
+      title="Next Page" 
+      href="{{ path('matuck_library_catalog_seriesbooks', {'id': series.getId()}) }}?page={{ books.getNextPage() }}" />
+    {% endif %}
+  {% endblock %}
+    {% block entries %}
+{% for book in books.getCurrentPageResults() %}
+  {% include 'matuckLibraryBundle:Catalog:bookentry.atom.twig' with {'book': book } %} 
+ {% endfor %}
+{% endblock %}

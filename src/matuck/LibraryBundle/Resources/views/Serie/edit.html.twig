@@ -1,0 +1,24 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Serie edit</h1>
+    {% include '::flashmessage.html.twig' %}
+    <form action="{{ path('matuck_library_serie_update', { 'id': serie.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+        <input type="hidden" name="_method" value="PUT" />
+        {{ form_widget(edit_form) }}
+        <p>
+            <button type="submit">Save</button>
+        </p>
+    </form>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('matuck_library_serie') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('matuck_library_serie_delete', { 'id': serie.id, 'redirect': 'flags' }) }}">Delete</a>
+    </li>
+</ul>
+{% endblock %}

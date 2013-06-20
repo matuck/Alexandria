@@ -1,0 +1,33 @@
+{% extends 'matuckLibraryBundle:Catalog:layout.atom.twig' %}
+{% block links %}
+  <link rel="self"  
+        href="{{ path('matuck_library_catalog_tagsletter', {'letter': letter}) }}?page={{ tags.getCurrentPage() }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="start" 
+        href="{{ path('matuck_library_catalog') }}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="up" 
+        href="{{ path('matuck_library_catalog_tags')}}" 
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  {% endblock %}
+  {% block title %}<title>Tags List</title>{% endblock %}
+  {% block id %}<id>tag:{{ path('matuck_library_catalog_tagsletter', {'letter': letter}) }}</id>{% endblock %}
+{% block pager %}
+    {% if tags.hasPreviousPage() %}
+    <link rel="previous"
+      type="application/atom+xml;profile=opds-catalog;kind=navigation"
+      title="Previous Page"
+      href="{{ path('matuck_library_catalog_tagsletter', {'letter': letter}) }}?page={{ tags.getPreviousPage() }}" />
+    {% endif %}
+  {% if tags.hasNextPage() %}
+    <link rel="next"
+      type="application/atom+xml;profile=opds-catalog;kind=navigation"
+      title="Next Page" 
+      href="{{ path('matuck_library_catalog_tagsletter', {'letter': letter}) }}?page={{ tags.getNextPage() }}" />
+    {% endif %}
+  {% endblock %}
+    {% block entries %}
+{% for tag in tags.getCurrentPageResults() %}
+  {% include 'matuckLibraryBundle:Catalog:tagsentry.atom.twig' with {'tag': tag } %} 
+ {% endfor %}
+{% endblock %}

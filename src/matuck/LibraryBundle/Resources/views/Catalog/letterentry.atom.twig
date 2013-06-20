@@ -1,0 +1,9 @@
+<entry>
+    <title>{{ letter|capitalize }}</title>
+    <link rel="http://opds-spec.org/sort/new" 
+          href="{{ path(route, {'letter': letter}) }}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>2012-01-09T22:41:00Z</updated>
+    <id>catalog_title_{{letter}}</id>
+    <content type="text">Books starting with the letter {{ letter|capitalize }}</content>
+</entry>
