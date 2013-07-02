@@ -9,7 +9,7 @@ services:
     matuck_library.nameparser:
         class: matuck\LibraryBundle\Lib\nameparser
     matuck_library.filehandler:
-        class: matuck\LibraryBundle\Lib\Filehandler\FileHandler
+        class: matuck\LibraryBundle\Lib\Filehandler\Filehandler
         arguments:  [ "@service_container" ]
     matuck_library.googlebookapi:
         class: matuck\LibraryBundle\Lib\GoogleBookApi
