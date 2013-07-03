@@ -17,7 +17,7 @@ class PagesController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $bookrepo = $em->getRepository('matuckLibraryBundle:book');
+        $bookrepo = $em->getRepository('matuckLibraryBundle:Book');
         /* @var $bookrepo \matuck\LibraryBundle\Entity\BookRepository */
         $pager = $bookrepo->newestbooks();
         /* @var $pager Pagerfanta */
