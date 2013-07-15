@@ -29,7 +29,7 @@ class SerieController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        if(!$serie = $em->getRepository('matuckLibraryBundle:serie')->find($id))
+        if(!$serie = $em->getRepository('matuckLibraryBundle:Serie')->find($id))
         {
             throw $this->createNotFoundException("The Series you requested could not be found");
         }

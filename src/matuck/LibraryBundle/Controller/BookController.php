@@ -246,7 +246,7 @@ class BookController extends Controller
     public function newbooksAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $pager = $em->getRepository('matuckLibraryBundle:book')->newestbooks();
+        $pager = $em->getRepository('matuckLibraryBundle:Book')->newestbooks();
         if($this->getRequest()->get('page'))
         {
             $pager->setCurrentPage($this->getRequest()->get('page'));
@@ -261,7 +261,7 @@ class BookController extends Controller
     public function popularAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $pager = $em->getRepository('matuckLibraryBundle:book')->popularbooks();
+        $pager = $em->getRepository('matuckLibraryBundle:Book')->popularbooks();
         if($this->getRequest()->get('page'))
         {
             $pager->setCurrentPage($this->getRequest()->get('page'));

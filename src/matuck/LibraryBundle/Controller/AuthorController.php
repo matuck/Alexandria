@@ -106,12 +106,12 @@ class AuthorController extends Controller
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        if(!$author = $em->getRepository('matuckLibraryBundle:author')->find($id))
+        if(!$author = $em->getRepository('matuckLibraryBundle:Author')->find($id))
         {
             throw $this->createNotFoundException("The Author you requested could not be found");
         }
         $iphash = $this->get('matuck_library.iphash')->get();
-        $isfav = $em->getRepository('matuckLibraryBundle:authorvotes')->findbyauthorandip($id, $iphash);
+        $isfav = $em->getRepository('matuckLibraryBundle:Authorvotes')->findbyauthorandip($id, $iphash);
         $pager = $em->getRepository('matuckLibraryBundle:book')->findByAuthor($author);
         if($this->getRequest()->get('page'))
         {
