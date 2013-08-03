@@ -23,7 +23,10 @@ class SerieController extends Controller
             $series->setCurrentPage(1);
         }
         
-        return $this->render('matuckLibraryBundle:Serie:index.html.twig', array('pager' => $series));
+        $response = $this->render('matuckLibraryBundle:Serie:index.html.twig', array('pager' => $series));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function showAction($id)
@@ -43,7 +46,10 @@ class SerieController extends Controller
         {
             $pager->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Serie:show.html.twig', array('serie' => $serie, 'pager' => $pager));
+        $response = $this->render('matuckLibraryBundle:Serie:show.html.twig', array('serie' => $serie, 'pager' => $pager));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function newAction()
@@ -52,10 +58,13 @@ class SerieController extends Controller
         $form   = $this->createForm(new SerieType(), $entity);
         $form->remove('createdAt');
         $form->remove('updatedAt');
-        return $this->render('matuckLibraryBundle:Serie:new.html.twig', array(
+        $response = $this->render('matuckLibraryBundle:Serie:new.html.twig', array(
             'serie' => $entity,
             'form'   => $form->createView(),
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     public function createAction(Request $request)
     {

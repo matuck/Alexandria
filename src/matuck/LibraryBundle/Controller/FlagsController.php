@@ -144,10 +144,13 @@ class FlagsController extends Controller
         {
             $entities->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Flags:index.html.twig', array(
+        $response = $this->render('matuckLibraryBundle:Flags:index.html.twig', array(
             'entities' => $entities,
             'filters_form' => $filters_form->getForm()->createView(),
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
 
     /**
@@ -215,9 +218,12 @@ class FlagsController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('matuckLibraryBundle:Flags:show.html.twig', array(
+        $response = $this->render('matuckLibraryBundle:Flags:show.html.twig', array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),        ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
 
     /**

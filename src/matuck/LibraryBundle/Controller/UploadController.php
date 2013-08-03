@@ -17,7 +17,10 @@ class UploadController extends Controller
         $form = $this->createFormBuilder()
                 ->add('file', 'file', array('label' => 'Filename'))
                 ->getForm();
-        return $this->render('matuckLibraryBundle:Upload:index.html.twig', array('form' => $form->createView()));
+        $response = $this->render('matuckLibraryBundle:Upload:index.html.twig', array('form' => $form->createView()));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
 
     public function fileAction()

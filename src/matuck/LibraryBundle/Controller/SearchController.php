@@ -87,6 +87,9 @@ class SearchController extends Controller
     }
     public function helpAction()
     {
-        return $this->render('matuckLibraryBundle:Search:help.html.twig');
+        $response = $this->render('matuckLibraryBundle:Search:help.html.twig');
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
 }

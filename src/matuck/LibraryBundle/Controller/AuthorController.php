@@ -27,10 +27,13 @@ class AuthorController extends Controller
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->remove('name');
-        return $this->render('matuckLibraryBundle:Author:bio.html.twig', array(
+        $response = $this->render('matuckLibraryBundle:Author:bio.html.twig', array(
             'author' => $author,
             'form'   => $form->createView(),
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function bioupdateAction($id)
@@ -121,7 +124,10 @@ class AuthorController extends Controller
         {
             $pager->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Author:show.html.twig', array('isfav' => $isfav,'author' => $author, 'pager' => $pager));
+        $response = $this->render('matuckLibraryBundle:Author:show.html.twig', array('isfav' => $isfav,'author' => $author, 'pager' => $pager));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function editAction($id)
@@ -201,7 +207,10 @@ class AuthorController extends Controller
         $form = $this->createForm(new AuthorType());
         $form->remove('createdAt');
         $form->remove('updatedAt');
-        return $this->render('matuckLibraryBundle:Author:new.html.twig', array('form' => $form->createView()));
+        $response = $this->render('matuckLibraryBundle:Author:new.html.twig', array('form' => $form->createView()));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function createAction()
@@ -238,6 +247,7 @@ class AuthorController extends Controller
         return $this->render('matuckLibraryBundle:Author:new.html.twig', array('form' => $form->createView()));
     }
     
+    /* @todo split the update part of this action */
     public function mergeAction()
     {
         $form = $this->createForm(new mergeAuthorType());

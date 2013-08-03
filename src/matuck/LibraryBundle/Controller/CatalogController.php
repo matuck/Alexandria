@@ -24,7 +24,7 @@ class CatalogController extends Controller
         $latestAuthorDate = $em->getRepository('matuckLibraryBundle:Author')->getlastauthordate();
 
         $latestSeriesDate = $em->getRepository('matuckLibraryBundle:Serie')->getlastseriedate();
-        return $this->render('matuckLibraryBundle:Catalog:index.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:index.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
@@ -32,6 +32,9 @@ class CatalogController extends Controller
             'latestAuthorDate' => $latestAuthorDate,
             'latestSeriesDate' => $latestSeriesDate,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function newAction()
@@ -52,12 +55,15 @@ class CatalogController extends Controller
         }
         /* @var $books \Pagerfanta\Pagerfanta */
         
-        return $this->render('matuckLibraryBundle:Catalog:new.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:new.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
             'books' => $books,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function popularAction()
@@ -78,12 +84,15 @@ class CatalogController extends Controller
         }
         /* @var $books \Pagerfanta\Pagerfanta */
         
-        return $this->render('matuckLibraryBundle:Catalog:popular.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:popular.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
             'books' => $books,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function abcAction($entity)
@@ -96,11 +105,14 @@ class CatalogController extends Controller
         {
             throw $this->createNotFoundException();
         }
-        return $this->render('matuckLibraryBundle:Catalog:abc'.$entity.'.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:abc'.$entity.'.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function titlesletterAction($letter)
@@ -134,13 +146,16 @@ class CatalogController extends Controller
         {
             $books->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Catalog:titlesbooks.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:titlesbooks.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
             'books' => $books,
             'letter' => $letter,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function authorletterAction($letter)
@@ -170,13 +185,16 @@ class CatalogController extends Controller
         {
             $authors->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Catalog:authorslist.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:authorslist.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
             'authors' => $authors,
             'letter' => $letter,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function authorbooksAction($id)
@@ -202,13 +220,16 @@ class CatalogController extends Controller
         {
             $books->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Catalog:authorbooks.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:authorbooks.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
             'authored' => $bookauthor,
             'books' => $books,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function seriesletterAction($letter)
@@ -242,13 +263,16 @@ class CatalogController extends Controller
         {
             $series->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Catalog:serieslist.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:serieslist.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
             'series' => $series,
             'letter' => $letter,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function seriesbooksAction($id)
@@ -274,13 +298,16 @@ class CatalogController extends Controller
         {
             $books->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Catalog:seriesbooks.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:seriesbooks.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
             'series' => $bookseries,
             'books' => $books,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     /////////////////////////////////////
     //////////////////////////////////////
@@ -318,13 +345,16 @@ class CatalogController extends Controller
         {
             $tags->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Catalog:tagslist.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:tagslist.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
             'tags' => $tags,
             'letter' => $letter,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function tagbooksAction($id)
@@ -360,7 +390,7 @@ class CatalogController extends Controller
             $resourceids[] = $resource->getResourceId();
         }
         $books = $bookrepo->findBooksinArrayofIDs($resourceids);
-        return $this->render('matuckLibraryBundle:Catalog:tagbooks.atom.twig', array(
+        $response = $this->render('matuckLibraryBundle:Catalog:tagbooks.atom.twig', array(
             'title' => $title,
             'author' => $author,
             'email' => $email,
@@ -368,6 +398,9 @@ class CatalogController extends Controller
             'books' => $books,
             'pager' => $resources,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function searchAction($terms)

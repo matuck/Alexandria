@@ -25,7 +25,10 @@ class TagController extends Controller
         {
             $tags->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Tag:index.html.twig', array('tags' => $tags));
+        $response = $this->render('matuckLibraryBundle:Tag:index.html.twig', array('tags' => $tags));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function showAction($id)
@@ -64,11 +67,14 @@ class TagController extends Controller
             $resourceids = array('none');
         }
         $books = $bookrepo->findBooksinArrayofIDs($resourceids);
-        return $this->render('matuckLibraryBundle:Tag:show.html.twig', array(
+        $response = $this->render('matuckLibraryBundle:Tag:show.html.twig', array(
             'tag' => $booktag,
             'books' => $books,
             'pager' => $resources,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
 
     public function editAction($id)
@@ -110,7 +116,10 @@ class TagController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new newTagType());
 
-        return $this->render('matuckLibraryBundle:Tag:new.html.twig', array('form' => $form->createView()));
+        $response = $this->render('matuckLibraryBundle:Tag:new.html.twig', array('form' => $form->createView()));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
 
     public function createAction()

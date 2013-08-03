@@ -17,7 +17,11 @@ class BookController extends Controller
         $em = $this->getDoctrine()->getManager();
         $books = $em->getRepository('matuckLibraryBundle:Book')->findAll();
         
-        return $this->render('matuckLibraryBundle:Book:index.html.twig', array('books' => $books));
+        $response = $this->render('matuckLibraryBundle:Book:index.html.twig', array('books' => $books));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
+        
     }
     
     public function showAction($id)
@@ -36,7 +40,10 @@ class BookController extends Controller
         
         $tagManager = $this->get('fpn_tag.tag_manager');
         $tagManager->loadTagging($book);
-        return $this->render('matuckLibraryBundle:Book:show.html.twig', array('book' => $book, 'amazonUrl' => $amazonUrl, 'audibleUrl' => $audibleUrl));
+        $response =  $this->render('matuckLibraryBundle:Book:show.html.twig', array('book' => $book, 'amazonUrl' => $amazonUrl, 'audibleUrl' => $audibleUrl));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function tagaddAction()
@@ -66,17 +73,6 @@ class BookController extends Controller
 
         $tagManager->saveTagging($book);
         return $this->redirect($this->generateUrl('matuck_library_book_show', array('id' => $formdata['book_id'])));
-    }
-    
-    public function newAction()
-    {
-        $entity = new Book();
-        $form   = $this->createForm(new BookType(), $entity);
-
-        return $this->render('matuckLibraryBundle:Book:new.html.twig', array(
-            'book' => $entity,
-            'form'   => $form->createView(),
-        ));
     }
 
     public function editAction($id)
@@ -255,7 +251,10 @@ class BookController extends Controller
         {
             $pager->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Book:newbook.html.twig', array('pager' => $pager));
+        $response = $this->render('matuckLibraryBundle:Book:newbook.html.twig', array('pager' => $pager));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function popularAction()
@@ -270,6 +269,9 @@ class BookController extends Controller
         {
             $pager->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Book:popular.html.twig', array('pager' => $pager));
+        $response = $this->render('matuckLibraryBundle:Book:popular.html.twig', array('pager' => $pager));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
 }

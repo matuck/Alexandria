@@ -40,7 +40,7 @@ class PagesController extends Controller
 				$featuredBooks[] = $b;
 			}
         }
-        return $this->render('matuckLibraryBundle:Pages:index.html.twig', array(
+        $response = $this->render('matuckLibraryBundle:Pages:index.html.twig', array(
             'newbooks' => $newbooks,
             'topratedbooks' => $topratedbooks,
             'popularbooks' => $popularbooks,
@@ -52,13 +52,19 @@ class PagesController extends Controller
             'featuredbooks' => $featuredBooks,
             'populartags' => $populartags,
         ));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     public function templatepageAction($template)
     {
         if($this->get('templating')->exists('matuckLibraryBundle:Pages:'.$template.'.html.twig'))
         {
-            return $this->render('matuckLibraryBundle:Pages:'.$template.'.html.twig');
+            $response = $this->render('matuckLibraryBundle:Pages:'.$template.'.html.twig');
+            $response->setPublic();
+            $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+            return $response;
         }
         else
         {
@@ -102,7 +108,10 @@ class PagesController extends Controller
             'Content-Disposition' => 'attachment; filename="'.$book->getDownloadName().'.epub"'
         );  
 
-        return new Response(file_get_contents($this->get('matuck_library.filehandler')->getBook($book->getId())), 200, $headers);
+        $response = new Response(file_get_contents($this->get('matuck_library.filehandler')->getBook($book->getId())), 200, $headers);
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
     
     private function authorform()
@@ -163,7 +172,10 @@ class PagesController extends Controller
         $authorform = $this->authorform();
         $serieform = $this->serieform();
         $tagform = $this->tagform();
-        return $this->render('matuckLibraryBundle:Pages:browse.html.twig', array('bookcount' => $bookcount, 'authorform' => $authorform->createView(), 'serieform' => $serieform->createView(), 'tagform' => $tagform->createView()));
+        $response = $this->render('matuckLibraryBundle:Pages:browse.html.twig', array('bookcount' => $bookcount, 'authorform' => $authorform->createView(), 'serieform' => $serieform->createView(), 'tagform' => $tagform->createView()));
+        $response->setPublic();
+        $response->setSharedMaxAge(600);
+        return $response;
     }
     
     public function redirectAction()

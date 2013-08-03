@@ -23,7 +23,10 @@ class ChillingdmcaController extends Controller
         {
             $pager->setCurrentPage(1);
         }
-        return $this->render('matuckLibraryBundle:Chillingdmca:index.html.twig', array('pager' => $pager));
+        $response = $this->render('matuckLibraryBundle:Chillingdmca:index.html.twig', array('pager' => $pager));
+        $response->setPublic();
+        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+        return $response;
     }
   
     public function newAction($id)
