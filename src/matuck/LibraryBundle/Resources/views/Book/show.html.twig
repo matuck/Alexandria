@@ -48,6 +48,7 @@
           {% if is_granted('ROLE_ADMIN') %}
              <li><a href="{{ path('matuck_library_book_edit', { 'id': book.getId() }) }}"><i class="icon-pencil"></i> Edit</a></li>
              <li><a href="{{ path('matuck_library_book_delete', { 'id': book.getId() }) }}"><i class="icon-remove-sign"></i> Delete</a></li>
+             <li><a href="{{ path('matuck_library_featured_make', { 'id': book.getId() }) }}"><i class="icon-star"></i> Make Featured</a></li>
           {% endif %}
         </ul>
       </div>

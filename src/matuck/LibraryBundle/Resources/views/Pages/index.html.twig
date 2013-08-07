@@ -38,8 +38,8 @@
     <div class="row">
     	<div class="span8">
     	<div class="bs-docs-staff-featured bs-docs-example-images">
-	{% for book in featuredbooks %}
-			<a href="{{ path('matuck_library_book_show', {'id': book.id}) }}"><img class="img-polaroid" src="{{ coverurl(book.getId()) }}.png" width="112" height="162"></img></a>
+	{% for feature in featuredbooks %}
+			<a href="{{ path('matuck_library_book_show', {'id': feature.getBook().id}) }}"><img class="img-polaroid" src="{{ coverurl(feature.getBook().getId()) }}.png" width="112" height="162"></img></a>
 	{% endfor %}
     </div>
     <div class="bs-docs-user-featured bs-docs-example-images">

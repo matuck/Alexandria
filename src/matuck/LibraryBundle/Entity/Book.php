@@ -110,6 +110,12 @@ class Book implements Taggable
     private $downloads;
     
     private $tags;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="Featured")
+     */
+    private $featured;
+            
     /**
      * Get id
      *
@@ -463,5 +469,28 @@ class Book implements Taggable
     public function getTaggableId()
     {
         return $this->getId();
+    }
+
+    /**
+     * Set featured
+     *
+     * @param \matuck\LibraryBundle\Entity\Featured $featured
+     * @return Book
+     */
+    public function setFeatured(\matuck\LibraryBundle\Entity\Featured $featured = null)
+    {
+        $this->featured = $featured;
+    
+        return $this;
+    }
+
+    /**
+     * Get featured
+     *
+     * @return \matuck\LibraryBundle\Entity\Featured 
+     */
+    public function getFeatured()
+    {
+        return $this->featured;
     }
 }

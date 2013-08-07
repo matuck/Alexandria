@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<h1>Featured Books - Page  {{ pager.getCurrentPage() }} </h1><br/>
+{% include '::flashmessage.html.twig' %}
+  {% for feature in pager.getCurrentPageResults() %}
+           {% include 'matuckLibraryBundle::booksearchresults.html.twig'
+               with {'book': feature.getBook()}
+           %}
+<div class="featuredon"><span class="featuredonlabel">Last Featured On:</span><span class="featuredondate">{{feature.getUpdatedAt()|date('Y-m-d Hi')}}</span></div>
+<div class="featuredreason">{{feature.getReason()|raw}}</div>
+  {% endfor %}
+<div class="pagerfanta">
+    {{ pagerfanta(pager) }}
+        <div>
+    <form method="GET" action="{{ path('matuck_library_featured') }}">
+      Jump to Page:<input type="text" name="page" size="4">
+      <input type="submit" value="Go"/>
+    </form>
+    </div>
+</div>
+{% endblock %}

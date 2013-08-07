@@ -19,6 +19,10 @@ tags:
     resource: "@matuckLibraryBundle/Resources/config/routes/tags_routes.yml"
 uploads:
     resource: "@matuckLibraryBundle/Resources/config/routes/upload_routes.yml"
+
+featured:
+  resource: "@matuckLibraryBundle/Controller/FeaturedController.php"
+  type:     annotation
     
 
     

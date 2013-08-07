@@ -30,16 +30,9 @@ class PagesController extends Controller
         $ratingcount = $em->getRepository('matuckLibraryBundle:Rating')->totalratingcount();
         $authorcount = $em->getRepository('matuckLibraryBundle:Author')->totalauthorcount();
         $populartags = $em->getRepository('matuckLibraryBundle:Tag')->populartags()->setMaxPerPage(20)->getCurrentPageResults();
+        $featured = $em->getRepository('matuckLibraryBundle:Featured')->PagerOrderbyUpdated()->setMaxPerPage(5)->getCurrentPageResults();
         $bookcount = $bookrepo->totalbookcount();
         $books = $this->container->getParameter('matuck_library_featured');
-        $featuredBooks=array();
-        foreach($books as $book)
-        {
-            if($b = $bookrepo->find($book))
-			{
-				$featuredBooks[] = $b;
-			}
-        }
         $response = $this->render('matuckLibraryBundle:Pages:index.html.twig', array(
             'newbooks' => $newbooks,
             'topratedbooks' => $topratedbooks,
@@ -49,7 +42,7 @@ class PagesController extends Controller
             'ratingcount' => $ratingcount,
             'authorcount' => $authorcount,
             'bookcount' => $bookcount,
-            'featuredbooks' => $featuredBooks,
+            'featuredbooks' => $featured,
             'populartags' => $populartags,
         ));
         $response->setPublic();
