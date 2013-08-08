@@ -89,7 +89,7 @@ class AuthorController extends Controller
         return $this->redirect($this->generateUrl('matuck_library_browse_author', array('id' => $id)));
     }
     
-    public function executeRemovefavourite(sfWebRequest $request)
+    public function removefavouriteAction($id)
     {
         $iphash = $this->get('matuck_library.iphash')->get();
         $em = $this->getDoctrine()->getManager();

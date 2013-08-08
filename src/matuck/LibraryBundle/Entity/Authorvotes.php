@@ -31,7 +31,7 @@ class Authorvotes
     /**
      * @var \Author
      *
-     * @ORM\ManyToOne(targetEntity="Author", inversedBy="authorvotes", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Author", inversedBy="authorvotes")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="authorid", referencedColumnName="id")
      * })

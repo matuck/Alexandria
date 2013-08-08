@@ -27,4 +27,4 @@ matuck_library_author_makefavourite:
     defaults: { _controller: matuckLibraryBundle:Author:makefavourite }
 matuck_library_author_removefavourite:
     pattern: /author/removefavourite/{id}
-    defaults: { _controller: matuckLibraryBundle:Author:bioupdate }
+    defaults: { _controller: matuckLibraryBundle:Author:removefavourite }
