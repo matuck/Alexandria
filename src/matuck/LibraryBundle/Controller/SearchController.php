@@ -16,7 +16,15 @@ class SearchController extends Controller
         else
         {
             $index = $this->get('ivory_lucene_search')->getIndex('master');
-            $results = $index->find($this->getRequest()->get('search'));
+            try
+            {
+                $results = $index->find($this->getRequest()->get('search'));
+            }
+            catch(\RuntimeException $e)
+            {
+                $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+                return $this->render('matuckLibraryBundle:Search:index.html.twig');
+            }
             return $this->render('matuckLibraryBundle:Search:index.html.twig', array('search' => $this->getRequest()->get('search'), 'results' => $results));
         }
     }
@@ -81,7 +89,16 @@ class SearchController extends Controller
                 }
             }
             
-            $params['results'] = $index->find($query);
+            try
+            {
+                $params['results'] = $index->find($query);
+            }
+            catch(\RuntimeException $e)
+            {
+                $this->get('session')->getFlashBag()->add('error', $e->getMessage());
+                return $this->render('matuckLibraryBundle:Search:advanced.html.twig');
+                
+            }
             return $this->render('matuckLibraryBundle:Search:advanced.html.twig', $params);
         }
     }
