@@ -15,6 +15,9 @@
   </div>
 
             <h1>{{ author.getName() }}</h1>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('matuck_library_author_merge', { 'author': author.getId() }) }}">Merge Author</a>
+            {% endif %}
         </div>
     <div class="row">
       <div class="span12">

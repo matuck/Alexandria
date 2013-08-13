@@ -2,8 +2,9 @@
 
 {% block body -%}
     <h1>Author merge</h1>
+    <div>{{ author.getName() }}</div>
 {% include '::flashmessage.html.twig' %}
-    <form action="{{ path('matuck_library_author_merge') }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('matuck_library_author_merge', { 'author': author.getId() }) }}" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
         <p>
             <button type="submit">Merge</button>

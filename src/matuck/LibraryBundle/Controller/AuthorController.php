@@ -247,10 +247,9 @@ class AuthorController extends Controller
         return $this->render('matuckLibraryBundle:Author:new.html.twig', array('form' => $form->createView()));
     }
     
-    /* @todo split the update part of this action */
-    public function mergeAction()
+    public function mergeAction(Author $author)
     {
-        $form = $this->createForm(new mergeAuthorType());
+        $form = $this->createForm(new mergeAuthorType($author));
         $em = $this->getDoctrine()->getManager();
         $bookrepo = $em->getRepository('matuckLibraryBundle:Book');
         /* @var $bookrepo \matuck\LibraryBundle\Entity\Bookrepository */
@@ -258,49 +257,37 @@ class AuthorController extends Controller
         {
             $form->bind($this->getRequest());
             $data = $form->getData();
-            $from = $data['from']->toArray();
             $to = $data['to'];
-            $key = array_search($to, $from);
-            if($key !== FALSE)
+            
+            $books = $bookrepo->findByAuthor($author);
+            foreach($books as $book)
             {
-                unset($from[$key]);
+                /* @var $book \matuck\LibraryBundle\Entity\Book */
+                $book->setAuthor($to);
+                $book->setUpdatedAt(new \DateTime);
+                $em->persist($book);
             }
-            $message['to'] = trim($to->getName());
-            $message['from'] = array();
-            foreach($from as $author)
+            $em->flush();
+            $em->remove($author);
+            $index = $this->get('ivory_lucene_search')->getIndex('master');
+            /* @var $index \Zend\Search\Lucene\Index */
+            $results = $index->find('type:author AND author:"'.$author->getName().'"');
+            foreach($results as $doc)
             {
-                $message['from'][] = trim($author->getName());
-                $books = $bookrepo->findByAuthor($author);
-                foreach($books as $book)
+                /* @var $doc Document */
+                if($author->getId() == $doc->objid && $doc->type == 'author')
                 {
-                    /* @var $book \matuck\LibraryBundle\Entity\Book */
-                    $book->setAuthor($to);
-                    $book->setUpdatedAt(new \DateTime);
-                    $em->persist($book);
-                }
-                $em->flush();
-                $authorname = $author->getName();
-                $em->remove($author);
-                $index = $this->get('ivory_lucene_search')->getIndex('master');
-                /* @var $index \Zend\Search\Lucene\Index */
-                $results = $index->find('type:author AND author:"'.$authorname.'"');
-                foreach($results as $doc)
-                {
-                    /* @var $doc Document */
-                    if($author->getId() == $doc->objid && $doc->type == 'author')
-                    {
-                        $index->delete($doc->id);
-                        $index->commit();
-                    }
+                    $index->delete($doc->id);
+                    $index->commit();
                 }
             }
             $em->flush();
-            $this->get('session')->getFlashBag()->add('notice', sprintf('Authors %s have been merged into author %s', implode(', ', $message['from']), $message['to']));
+            $this->get('session')->getFlashBag()->add('notice', sprintf('Authors %s have been merged into author %s', trim($author->getName()), trim($to->getName())));
+            return $this->redirect($this->generateUrl('matuck_library_author_show', array('id' => $to->getId())));
         }
-        //rebuild form so it gets rid of things that have been deleted.
-        $form = $this->createForm(new mergeAuthorType());
         return $this->render('matuckLibraryBundle:Author:merge.html.twig', array(
             'form'   => $form->createView(),
+            'author' => $author,
             ));
     }
 }

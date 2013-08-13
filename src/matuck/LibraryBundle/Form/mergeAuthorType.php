@@ -9,23 +9,19 @@ use Doctrine\ORM\EntityRepository;
 
 class mergeAuthorType extends AbstractType
 {
+    public function __construct(\matuck\LibraryBundle\Entity\Author $author)
+    {
+        $this->author = $author;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('from', 'entity', array(
-                'class' => 'matuckLibraryBundle:Author',
-                'query_builder' => function(EntityRepository $er) {
-                    return $er->createQueryBuilder('a')
-                                  ->orderBy('a.name', 'ASC');
-                                },
-                'property' => 'name',
-                'multiple' => true,
-            ))
             ->add('to', 'entity', array(
                 'class' => 'matuckLibraryBundle:Author',
                 'query_builder' => function(EntityRepository $er) {
-                    return $er->createQueryBuilder('a')
-                                  ->orderBy('a.name', 'ASC');
+                    return $er->createQueryBuilder('a')->where('a.id != :authorid')
+                                  ->orderBy('a.name', 'ASC')->setParameter('authorid', $this->author->getId());
                                 },
                 'property' => 'name',
             ))
