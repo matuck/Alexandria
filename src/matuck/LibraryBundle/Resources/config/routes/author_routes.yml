@@ -19,6 +19,9 @@ matuck_library_author_create:
 matuck_library_author_merge:
     pattern: /admin/author/merge/{author}
     defaults: { _controller: matuckLibraryBundle:Author:merge }
+matuck_library_author_delete:
+    pattern: /admin/author/delete/{author}
+    defaults: { _controller: matuckLibraryBundle:Author:delete }
 matuck_library_author_bioupdate:
     pattern: /author/bioupdate/{id}
     defaults: { _controller: matuckLibraryBundle:Author:bioupdate }

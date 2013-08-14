@@ -290,4 +290,13 @@ class AuthorController extends Controller
             'author' => $author,
             ));
     }
+    
+    public function deleteAction(Author $author)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($author);
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('notice', sprintf('Authors %s has been deleted.', trim($author->getName())));
+        return $this->redirect($this->generateUrl('matuck_library_homepage'));
+    }
 }
