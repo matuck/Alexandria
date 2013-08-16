@@ -44,7 +44,7 @@ class CatalogController extends Controller
         $email = $this->container->getParameter('matuck_library_catalogemail');
         
         $em = $this->getDoctrine()->getManager();
-        $books = $em->getRepository('matuckLibraryBundle:book')->newestbooks();
+        $books = $em->getRepository('matuckLibraryBundle:Book')->newestbooks();
         if($this->getRequest()->get('page'))
         {
             $books->setCurrentPage($this->getRequest()->get('page'));
@@ -73,7 +73,7 @@ class CatalogController extends Controller
         $email = $this->container->getParameter('matuck_library_catalogemail');
         
         $em = $this->getDoctrine()->getManager();
-        $books = $em->getRepository('matuckLibraryBundle:book')->popularbooks();
+        $books = $em->getRepository('matuckLibraryBundle:Book')->popularbooks();
         if($this->getRequest()->get('page'))
         {
             $books->setCurrentPage($this->getRequest()->get('page'));
@@ -410,7 +410,7 @@ class CatalogController extends Controller
         $email = $this->container->getParameter('matuck_library_catalogemail');
         
         $em = $this->getDoctrine()->getManager();
-        $books = $em->getRepository('matuckLibraryBundle:book')->searchEverything(urldecode($terms));
+        $books = $em->getRepository('matuckLibraryBundle:Book')->searchEverything(urldecode($terms));
         if($this->getRequest()->get('page'))
         {
             $books->setCurrentPage($this->getRequest()->get('page'));
