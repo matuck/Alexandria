@@ -61,7 +61,14 @@ class GoogleBookApi extends ContainerAware
         if($curl['status']==200)
         {
             $json=json_decode($curl['content'],true);
-            $bookurl=$this->appendGoogleAPIKey('https://www.googleapis.com/books/v1/volumes/'.$json['items'][0]['id']);
+            if(isset($json['items']) && !empty($json['items']))
+            {
+                $bookurl=$this->appendGoogleAPIKey('https://www.googleapis.com/books/v1/volumes/'.$json['items'][0]['id']);
+            }
+            else
+            {
+                return array();
+            }
             $curl=$this->curlGet($bookurl);
             if($curl['status']==200)
             {

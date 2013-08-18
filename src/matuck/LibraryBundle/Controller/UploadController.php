@@ -14,6 +14,9 @@ class UploadController extends Controller
 {
     public function indexAction()
     {
+        $info = $this->getEpubInfo('/home/matuck/Downloads/Harris_Charlaine-Dead_Until_Dark.epub');
+        //$info = $this->getEpubInfo('/home/matuck/Downloads/Harris_Charlaine-All_Together_Dead.epub');
+        var_dump($info);
         $form = $this->createFormBuilder()
                 ->add('file', 'file', array('label' => 'Filename'))
                 ->getForm();
@@ -43,11 +46,11 @@ class UploadController extends Controller
       {
         $ginfo = $googleapi->fetchMetaByISBN($info['isbn']);
       }
-      else 
+      else if(isset($info['title']) && $info['title'] != '' && isset($info['author']) && $info['author'] != '')
       {
         $ginfo = $googleapi->fetchMetaByTitleAndAuthor($info['title'], $info['author']);
       }
-      if($ginfo)
+      if(isset($ginfo))
       {
         if(isset($ginfo['title']) && $ginfo['title'] != '')
         {
@@ -76,18 +79,23 @@ class UploadController extends Controller
       }
       $nameparser = $this->get('matuck_library.nameparser');
       /* @var $nameparser \matuck\LibraryBundle\Lib\nameparser */
-      $info['author'] = $nameparser->lastfirst($info['author']);
-
-      if(preg_match('/^The /', $info['title']))
-      {
-          $info['title'] = preg_replace('/^The /', '', $info['title']).', The';
-      }
-      //if series begins with the move to end.
-      if(preg_match('/^The /', $info['series']))
-      {
-          $info['series'] = preg_replace('/^The /', '', $info['series']).', The';
-      }
+      //$info['author'] = $nameparser->lastfirst($info['author']);
       
+      if(isset($info['title']) && $info['title'] != '')
+      {
+        if(preg_match('/^The /', $info['title']))
+        {
+            $info['title'] = preg_replace('/^The /', '', $info['title']).', The';
+        }
+      }
+      if(isset($info['series']))
+      {
+        //if series begins with the move to end.
+        if(preg_match('/^The /', $info['series']))
+        {
+            $info['series'] = preg_replace('/^The /', '', $info['series']).', The';
+        }
+      }
       // 3. Return Book Info
       $info['file_id'] = $tempfilename;
       $form = $this->createFormBuilder($info)
@@ -246,34 +254,73 @@ class UploadController extends Controller
       // Close the zip
       zip_entry_close($zipentries[$path]);
       zip_close($zip);
-
+      $info = array();
       $content_xml=new \SimpleXMLElement($entry_content);
       $ns = $content_xml->getNamespaces(true);
-      foreach($content_xml->metadata->meta as $meta)
+      if($content_xml->metadata->meta != NULL)
       {
-        switch ($meta['name']) 
+        foreach($content_xml->metadata->meta as $meta)
         {
-          case 'calibre:series':
-            $info['series'] = (string)$meta['content'];
-            break;
+          switch ($meta['name']) 
+          {
+            case 'calibre:series':
+              $info['series'] = (string)$meta['content'];
+              print($info['series']);
+              break;
 
-          case 'calibre:series_index':
-            $info['series_order'] = (string)$meta['content'];
-            break;
+            case 'calibre:series_index':
+              $info['series_order'] = (string)$meta['content'];
+              break;
+          }
         }
       }
       $child = $content_xml->metadata->children($ns['dc']);
-
-      $info['title']=(string)$child->title;
-      $info['author']=(string)$child->creator;
-      $info['summary']=(string)$child->description;
+      try
+      {
+          $child->count();
+      }
+      catch (\Symfony\Component\Debug\Exception\ContextErrorException $e)
+      {
+          return $info;
+      }
+      try
+      {
+          $info['title']=(string)$child->title;
+      }
+      catch(\Symfony\Component\Debug\Exception\ContextErrorException $e)
+      {
+          $info['title'] = '';
+      }
+      try
+      {
+          $info['author']=(string)$child->creator;
+      }
+      catch(\Symfony\Component\Debug\Exception\ContextErrorException $e)
+      {
+          $info['author'] = '';
+      }
+      try
+      {
+          $info['summary']=(string)$child->description;
+      }
+      catch(\Symfony\Component\Debug\Exception\ContextErrorException $e)
+      {
+          $info['summary'] = '';
+      }
       foreach ($child as $node)
       {
-        $attrib =$node->attributes($ns['opf']);
-        if(strtolower($attrib['scheme']) == 'isbn')
+        try
         {
-          $info['isbn'] = (string)$node;
-        }  
+            $attrib =$node->attributes($ns['opf']);
+            if(strtolower($attrib['scheme']) == 'isbn')
+            {
+              $info['isbn'] = (string)$node;
+            }
+        }
+        catch(\Symfony\Component\Debug\Exception\ContextErrorException $e)
+        {
+            
+        }
       }
       foreach($child->subject as $cur_subject)
       {
