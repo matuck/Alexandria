@@ -14,9 +14,6 @@ class UploadController extends Controller
 {
     public function indexAction()
     {
-        $info = $this->getEpubInfo('/home/matuck/Downloads/Harris_Charlaine-Dead_Until_Dark.epub');
-        //$info = $this->getEpubInfo('/home/matuck/Downloads/Harris_Charlaine-All_Together_Dead.epub');
-        var_dump($info);
         $form = $this->createFormBuilder()
                 ->add('file', 'file', array('label' => 'Filename'))
                 ->getForm();
