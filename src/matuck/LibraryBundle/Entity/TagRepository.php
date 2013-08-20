@@ -42,7 +42,7 @@ class TagRepository extends EntityRepository
     
     public function findByBookswithNumber()
     {
-        $qb = $this->createQueryBuilder('s')
+        $qb = $this->createQueryBuilder('t')
                 ->orderBy('t.name', 'ASC');
         $qb->andWhere($qb->expr()->like('t.name', $qb->expr()->literal('0%')).' OR '.$qb->expr()->like('t.name', $qb->expr()->literal('1%')).' OR '.$qb->expr()->like('t.name', $qb->expr()->literal('2%')).' OR '.$qb->expr()->like('t.name', $qb->expr()->literal('3%')).' OR '.$qb->expr()->like('t.name', $qb->expr()->literal('4%')).' OR '.$qb->expr()->like('t.name', $qb->expr()->literal('5%')).' OR '.$qb->expr()->like('t.name', $qb->expr()->literal('6%')).' OR '.$qb->expr()->like('t.name', $qb->expr()->literal('7%')).' OR '.$qb->expr()->like('t.name', $qb->expr()->literal('8%')).' OR '.$qb->expr()->like('t.name', $qb->expr()->literal('9%')));
         $adapter = new DoctrineORMAdapter($qb);
@@ -52,7 +52,7 @@ class TagRepository extends EntityRepository
     
     public function findByFirstLetterPaged($letter)
     {
-        $qb = $this->createQueryBuilder('s')
+        $qb = $this->createQueryBuilder('t')
                 ->andWhere('t.name LIKE :letter')
                 ->orderBy('t.name', 'ASC')
                 ->setParameter('letter', $letter.'%');
