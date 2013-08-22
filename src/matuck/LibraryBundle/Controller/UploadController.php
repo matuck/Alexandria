@@ -9,6 +9,8 @@ use matuck\LibraryBundle\Form\BookType;
 use matuck\LibraryBundle\Entity\Author;
 use matuck\LibraryBundle\Entity\Serie;
 use matuck\LibraryBundle\Lib\Filehandler;
+use Ivory\LuceneSearchBundle\Model\Document;
+use Ivory\LuceneSearchBundle\Model\Field;
 
 class UploadController extends Controller
 {
@@ -98,10 +100,10 @@ class UploadController extends Controller
       $form = $this->createFormBuilder($info)
               ->add('title', 'text')
               ->add('author', 'text')
-              ->add('series', 'text')
-              ->add('series_order', 'text')
-              ->add('isbn', 'text')
-              ->add('summary', 'textarea')
+              ->add('series', 'text', array('required' => false))
+              ->add('series_order', 'text', array('required' => false))
+              ->add('isbn', 'text', array('required' => false))
+              ->add('summary', 'textarea', array('required' => false))
               ->add('newcover', 'file', array('required' => false))
               ->add('file_id', 'hidden');
       return $this->render('matuckLibraryBundle:Upload:file.html.twig', array('form' => $form->getForm()->createView(), 'cover' => $info['cover']));
@@ -169,7 +171,7 @@ class UploadController extends Controller
         $doc3->addField(Field::text('title', $book->getTitle()));
         $doc3->addField(Field::text('author', $author->getName()));
         $doc3->addField(Field::binary('authorid', $book->getAuthor()->getId()));
-        if($serie)
+        if(isset($serie))
         {
             $doc3->addField(Field::text('series', $serie->getName()));
             $doc3->addField(Field::binary('serieid', $serie->getId()));
@@ -191,7 +193,7 @@ class UploadController extends Controller
         }
         else
         {
-            if($info['cover'] != '')
+            if(!empty($info['cover']))
             {
                 $cover = $info['file_id'].'.jpg';
                 $this->save_image_from_web($info['cover'], $this->container->getParameter('matuck_library_tempuploads').$cover);
