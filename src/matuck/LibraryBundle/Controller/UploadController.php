@@ -105,7 +105,8 @@ class UploadController extends Controller
               ->add('isbn', 'text', array('required' => false))
               ->add('summary', 'textarea', array('required' => false))
               ->add('newcover', 'file', array('required' => false))
-              ->add('file_id', 'hidden');
+              ->add('file_id', 'hidden')
+              ->add('cover', 'hidden', array('required' => false));
       return $this->render('matuckLibraryBundle:Upload:file.html.twig', array('form' => $form->getForm()->createView(), 'cover' => $info['cover']));
     }
 
@@ -193,6 +194,7 @@ class UploadController extends Controller
         }
         else
         {
+            
             if(!empty($info['cover']))
             {
                 $cover = $info['file_id'].'.jpg';
