@@ -189,8 +189,8 @@ class UploadController extends Controller
         {
             /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
             $file->move($this->container->getParameter('matuck_library_tempuploads'), $info['file_id'].'.cover');
-            $cover = $info['file_id'].'.jpg';
-            $fh->moveCover($this->container->getParameter('matuck_library_tempuploads').$cover);
+            $cover = $info['file_id'].'.cover';
+            $fh->moveCover($this->container->getParameter('matuck_library_tempuploads').$cover, $book->getId());
         }
         else
         {
