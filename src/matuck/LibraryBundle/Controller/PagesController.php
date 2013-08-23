@@ -100,11 +100,19 @@ class PagesController extends Controller
             'Content-Transfer-Encoding' => 'binary',
             'Content-Disposition' => 'attachment; filename="'.$book->getDownloadName().'.epub"'
         );  
-
-        $response = new Response(file_get_contents($this->get('matuck_library.filehandler')->getBook($book->getId())), 200, $headers);
-        $response->setPublic();
-        $response->setSharedMaxAge($this->container->getParameter('cache_time'));
-        return $response;
+        $filehandler = $this->get('matuck_library.filehandler');
+        if($filehandler->bookExists($book->getId()))
+        {
+            $response = new Response(file_get_contents($this->get('matuck_library.filehandler')->getBook($book->getId())), 200, $headers);
+            $response->setPublic();
+            $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+            return $response;
+        }
+        else
+        {
+            $this->get('session')->getFlashBag()->add('error', 'There book file is missing please flag this book.');
+            return $this->redirect($this->generateUrl('matuck_library_book_show', array('id' => $book->getId())));
+        }
     }
     
     private function authorform()

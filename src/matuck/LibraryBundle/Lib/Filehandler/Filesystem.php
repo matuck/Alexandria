@@ -116,5 +116,31 @@ class Filesystem extends ContainerAware implements FilehandlerInterface
             return true;
         }
     }
+    
+    public function bookExists($id)
+    {
+        $path = $this->getBook($id);
+        if(file_exists($path))
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+    
+    public function coverExists($id)
+    {
+        $path = $this->getCover($id);
+        if(file_exists($path))
+        {
+            return TRUE;
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
 }
 ?>

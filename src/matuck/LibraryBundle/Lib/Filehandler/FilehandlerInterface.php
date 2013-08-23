@@ -10,4 +10,6 @@ interface FilehandlerInterface
     public function getCover($id);
     public function deleteBook($id);
     public function deleteCover($id);
+    public function bookExists($id);
+    public function coverExists($id);
 }

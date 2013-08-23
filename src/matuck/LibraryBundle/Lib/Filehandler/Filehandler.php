@@ -53,5 +53,15 @@ class Filehandler extends ContainerAware
     {
         return $this->fh->deleteCover($id);
     }
+    
+    public function bookExists($id)
+    {
+        return $this->fh->bookExists($id);
+    }
+    
+    public function coverExists($id)
+    {
+        return $this->fh->coverExists($id);
+    }
 }
 ?>
