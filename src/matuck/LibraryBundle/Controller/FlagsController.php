@@ -216,11 +216,11 @@ class FlagsController extends Controller
             throw $this->createNotFoundException('Unable to find Flags entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        //$deleteForm = $this->createDeleteForm($id);
 
         $response = $this->render('matuckLibraryBundle:Flags:show.html.twig', array(
             'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),        ));
+          /*  'delete_form' => $deleteForm->createView(),  */      ));
         $response->setPublic();
         $response->setSharedMaxAge($this->container->getParameter('cache_time'));
         return $response;

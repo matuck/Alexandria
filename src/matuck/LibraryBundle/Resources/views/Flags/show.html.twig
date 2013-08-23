@@ -14,6 +14,10 @@
                 <td>{{ entity.type }}</td>
             </tr>
             <tr>
+                <th>Book</th>
+                <td><a href="{{ path('matuck_library_book_show', { 'id': entity.getBook().id }) }}">{{ entity.getBook().getTitle() }}</a></td>
+            </tr>
+            <tr>
                 <th>Title</th>
                 <td>{{ entity.title }}</td>
             </tr>
@@ -44,11 +48,7 @@
         </a>
     </li>
     <li>
-        <form action="{{ path('matuck_library_flags_delete', { 'id': entity.id }) }}" method="post">
-            <input type="hidden" name="_method" value="DELETE" />
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
+        <a href="{{ path('matuck_library_flags_delete', { 'id': entity.id, 'redirect': 'flags' }) }}">Delete</a>
     </li>
 </ul>
 {% endblock %}
