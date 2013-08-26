@@ -44,10 +44,10 @@ class ChillingdmcaController extends Controller
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->remove('ipAddress');
-        return $this->render('matuckLibraryBundle:Chillingdmca:new.html.twig', array('form' => $form->createView()));
+        return $this->render('matuckLibraryBundle:Chillingdmca:new.html.twig', array('form' => $form->createView(), 'book' => $book));
     }
   
-    public function createAction()
+    public function createAction($bookid)
     {
         if(!$this->getRequest()->getMethod() == 'POST')
         {
@@ -72,12 +72,12 @@ class ChillingdmcaController extends Controller
             $em->persist($book);
             $em->flush();
             $this->get('session')->getFlashBag()->add('notice', sprintf('DMCA Take down has been registered for %s', $dmca->getBookTitle()));
-            $this->redirect($this->generateUrl('matuck_library_homepage'));
+            return $this->redirect($this->generateUrl('matuck_library_homepage'));
         }
         else
         {
             $this->get('session')->getFlashBag()->add('error', 'Failed to create the dmca take down please try again.');
-            $this->redirect($this->generateUrl('matuck_library_chillingdmca_new', array('id' => $bookid)));
+            return $this->redirect($this->generateUrl('matuck_library_chillingdmca_new', array('id' => $bookid)));
         }
     }
     

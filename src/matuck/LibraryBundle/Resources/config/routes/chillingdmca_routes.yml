@@ -5,7 +5,7 @@ matuck_library_chillingdmca_new:
     pattern: /chillingdmca/new/book_id/{id}
     defaults: { _controller: matuckLibraryBundle:Chillingdmca:new }
 matuck_library_chillingdmca_create:
-    pattern: /chillingdmca/create
+    pattern: /chillingdmca/create/{bookid}
     defaults: { _controller: matuckLibraryBundle:Chillingdmca:create }
 matuck_library_chillingdmca_edit:
     pattern: /admin/chillingdmca/edit/{id}
