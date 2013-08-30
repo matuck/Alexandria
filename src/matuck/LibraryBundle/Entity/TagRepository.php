@@ -26,9 +26,11 @@ class TagRepository extends EntityRepository
                 ->leftJoin('t.tagging', 't2')
                 ->groupBy('t.id')
                 ->having('tagcount > 0')
-                ->orderBy('tagcount', 'desc');
+                ->orderBy('tagcount', 'desc')
+                ->setMaxResults(20);
         $adapter = new DoctrineORMAdapter($qb);
         return new Pagerfanta($adapter);
+        //return $qb;
     }
     
     public function findAllPagerOrderbyName()

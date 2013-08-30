@@ -23,7 +23,7 @@ class Tag extends BaseTag
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag")
      **/
     protected $tagging;
  
