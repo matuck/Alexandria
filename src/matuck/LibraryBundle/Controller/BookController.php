@@ -31,6 +31,10 @@ class BookController extends Controller
         {
             throw $this->createNotFoundException("The book you requested could not be found");
         }
+        if(!$book->getIsPublic())
+        {
+            throw $this->createNotFoundException("The book has been removed by a DMCA request.");
+        }
         $searchTerm= $book->getAuthor()->getName()." ".$book->getTitle();
         $searchTerm=preg_replace('/,/','',$searchTerm);
         $author = $book->getAuthor()->getName();
