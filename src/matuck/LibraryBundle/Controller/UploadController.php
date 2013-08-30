@@ -78,7 +78,14 @@ class UploadController extends Controller
       }
       $nameparser = $this->get('matuck_library.nameparser');
       /* @var $nameparser \matuck\LibraryBundle\Lib\nameparser */
-      //$info['author'] = $nameparser->lastfirst($info['author']);
+      try
+      {
+         $info['author'] = $nameparser->lastfirst($info['author']);
+      }
+      catch(Exception $e)
+      {
+          $info['author'] = $info['author'];
+      }
       
       if(isset($info['title']) && $info['title'] != '')
       {
