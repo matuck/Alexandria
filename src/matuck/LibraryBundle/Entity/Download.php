@@ -22,13 +22,6 @@ class Download
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="ip", type="string", length=20, nullable=true)
-     */
-    private $ip;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -62,29 +55,6 @@ class Download
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set ip
-     *
-     * @param string $ip
-     * @return Download
-     */
-    public function setIp($ip)
-    {
-        $this->ip = $ip;
-    
-        return $this;
-    }
-
-    /**
-     * Get ip
-     *
-     * @return string 
-     */
-    public function getIp()
-    {
-        return $this->ip;
     }
 
     /**

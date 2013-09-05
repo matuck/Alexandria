@@ -26,7 +26,7 @@ class PagesController extends Controller
         $topratedbooks = $bookrepo->findAllPagerOrderbyRating()->setMaxPerPage(5)->getCurrentPageResults();
         $popularbooks = $bookrepo->popularbooks()->setMaxPerPage(10)->getCurrentPageResults();
         $popularauthors = $em->getRepository('matuckLibraryBundle:Author')->findAllPagedOrderbyVotes()->setMaxPerPage(10)->getCurrentPageResults();
-        $downloadcount = $em->getRepository('matuckLibraryBundle:Download')->totaldownloadcount();
+        $downloadcount = $em->getRepository('matuckLibraryBundle:Dailydownloads')->getTotalDownloadCount();
         $ratingcount = $em->getRepository('matuckLibraryBundle:Rating')->totalratingcount();
         $authorcount = $em->getRepository('matuckLibraryBundle:Author')->totalauthorcount();
         $populartags = $em->getRepository('matuckLibraryBundle:Tag')->populartags()->setMaxPerPage(20)->getCurrentPageResults();
@@ -76,24 +76,12 @@ class PagesController extends Controller
         /* @var $book \matuck\LibraryBundle\Entity\Book */
 
         // Store the download request
-        $iphash = $this->get('matuck_library.iphash')->get();
-        if(!$sameDl = $em->getRepository('matuckLibraryBundle:Download')->findByBookandIphash($book, $iphash))
-        {
-            $download = new Download();
-            $download->setBook($book);
-            $download->setIp($iphash);
-            $download->setCreatedAt(new \DateTime);
-            $download->setUpdatedAt(new \DateTime);
-            $em->persist($download);
-            $em->flush();
-        }
-        else
-        {
-            /* @var $sameDl Download */
-            $sameDl->setUpdatedAt(new \DateTime);
-            $em->persist($sameDl);
-            $em->flush();
-        }
+        $download = new Download();
+        $download->setBook($book);
+        $download->setCreatedAt(new \DateTime);
+        $download->setUpdatedAt(new \DateTime);
+        $em->persist($download);
+        $em->flush();
 
         $headers = array(
             'Cache-control' => 'must-revalidate, post-check=0, pre-check=0',

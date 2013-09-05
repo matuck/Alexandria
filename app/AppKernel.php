@@ -16,12 +16,13 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-			new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+	    new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             new Liip\ThemeBundle\LiipThemeBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new FPN\TagBundle\FPNTagBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Ivory\LuceneSearchBundle\IvoryLuceneSearchBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new matuck\LibraryBundle\matuckLibraryBundle(),
         );
 

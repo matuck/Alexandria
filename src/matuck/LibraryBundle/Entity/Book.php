@@ -117,6 +117,12 @@ class Book implements Taggable
     private $featured;
             
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="downcount", type="bigint", nullable=true)
+     */
+    private $downcount;
+    /**
      * Get id
      *
      * @return integer 
@@ -492,5 +498,28 @@ class Book implements Taggable
     public function getFeatured()
     {
         return $this->featured;
+    }
+
+    /**
+     * Set downcount
+     *
+     * @param integer $downcount
+     * @return Book
+     */
+    public function setDowncount($downcount)
+    {
+        $this->downcount = $downcount;
+    
+        return $this;
+    }
+
+    /**
+     * Get downcount
+     *
+     * @return integer 
+     */
+    public function getDowncount()
+    {
+        return $this->downcount;
     }
 }

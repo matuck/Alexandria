@@ -19,14 +19,4 @@ class DownloadRepository extends EntityRepository
         
         return $qb->getQuery()->getSingleScalarResult();
     }
-    
-    public function findByBookandIphash($book, $iphash)
-    {
-        $qb = $this->createQueryBuilder('d')
-                ->where('d.book = :book')
-                ->andWhere('d.ip = :iphash')
-                ->setParameter('book', $book)
-                ->setParameter('iphash', $iphash);
-        return $qb->getQuery()->getOneOrNullResult();
-    }
 }

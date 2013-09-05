@@ -97,12 +97,11 @@ class BookRepository extends EntityRepository
     public function popularbooks()
     {
         $qb = $this->createQueryBuilder('b')
-                ->select('b, COUNT(d.id) AS down_count')
-                ->leftJoin('b.downloads', 'd')
+                ->select('b')
                 ->where('b.isPublic = 1')
                 ->groupBy('b.id')
-                ->having('down_count > 0')
-                ->orderBy('down_count', 'desc');
+                ->having('b.downcount > 0')
+                ->orderBy('b.downcount', 'desc');
         $adapter = new DoctrineORMAdapter($qb);
         return new Pagerfanta($adapter);
     }
