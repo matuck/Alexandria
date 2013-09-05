@@ -26,7 +26,7 @@ class PagesController extends Controller
         $topratedbooks = $bookrepo->findAllPagerOrderbyRating()->setMaxPerPage(5)->getCurrentPageResults();
         $popularbooks = $bookrepo->popularbooks()->setMaxPerPage(10)->getCurrentPageResults();
         $popularauthors = $em->getRepository('matuckLibraryBundle:Author')->findAllPagedOrderbyVotes()->setMaxPerPage(10)->getCurrentPageResults();
-        $downloadcount = $em->getRepository('matuckLibraryBundle:Dailydownloads')->getTotalDownloadCount();
+        $downloadcount = $em->getRepository('matuckLibraryBundle:Dailydownloads')->getTotalDownloadCount()[0];
         $ratingcount = $em->getRepository('matuckLibraryBundle:Rating')->totalratingcount();
         $authorcount = $em->getRepository('matuckLibraryBundle:Author')->totalauthorcount();
         $populartags = $em->getRepository('matuckLibraryBundle:Tag')->populartags()->setMaxPerPage(20)->getCurrentPageResults();
