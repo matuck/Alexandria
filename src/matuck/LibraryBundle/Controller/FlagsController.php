@@ -336,7 +336,6 @@ class FlagsController extends Controller
             switch ($redirect)
             {
               case 'book':
-                  echo $flag->getBook()->getId();
                 return $this->redirect($this->generateUrl('matuck_library_book_show', array('id' => $flag->getBook()->getId())));
                 break;
               case 'flags':
