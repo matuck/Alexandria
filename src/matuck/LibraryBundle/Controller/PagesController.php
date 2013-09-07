@@ -99,8 +99,15 @@ class PagesController extends Controller
         }
         else
         {
-            $this->get('session')->getFlashBag()->add('error', 'There book file is missing please flag this book.');
-            return $this->redirect($this->generateUrl('matuck_library_book_show', array('id' => $book->getId())));
+            $flag = new \matuck\LibraryBundle\Entity\Flags();
+            $flag->setBook($book);
+            $flag->setComplete(FALSE);
+            $flag->setCreatedAt(new \DateTime);
+            $flag->setUpdatedAt(new \DateTime);
+            $flag->setTitle('[AUTO]File is missing for this book.');
+            $flag->setType('File');
+            $em->persist($flag);
+            throw $this->createNotFoundException(sprintf("The book file for \"%s\" is missing from the server a flag has been auto generated for this book.", $book->getTitle()));
         }
     }
     
