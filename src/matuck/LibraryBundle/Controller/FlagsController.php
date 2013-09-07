@@ -303,7 +303,7 @@ class FlagsController extends Controller
         switch($redirect)
         {
             case 'book':
-                $url = $this->generateUrl('matuck_library_book_show', array('id' => $entity->getBook().getId()));
+                $url = $this->generateUrl('matuck_library_book_show', array('id' => $entity->getBook()->getId()));
                 break;
             case 'flags':
                 $url = $this->generateUrl('matuck_library_flags');
