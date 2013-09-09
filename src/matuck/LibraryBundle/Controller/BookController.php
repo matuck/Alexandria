@@ -137,39 +137,7 @@ class BookController extends Controller
                 $newfile->move($tmpuploads, $tmpid);
                 $fh->moveBook($tmpid, $book->getId());
             }
-            /*$file->move($tempuploadpath, $tempfilename);
-      chmod($tempuploadpath.$tempfilename, 0755);*/
             
-            
-          /*  $fh = $this->get('matuck_library.filehandler');*/
-        /* @var $fh Filehandler */
-        /*$cover = FALSE;
-        if($file = $this->getRequest()->files->get('form')['newcover'])
-        {*/
-            /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
-        /*    $file->move($this->container->getParameter('matuck_library_tempuploads'), $info['file_id'].'.cover');
-            $cover = $info['file_id'].'.cover';
-            $fh->moveCover($this->container->getParameter('matuck_library_tempuploads').$cover, $book->getId());
-        }
-        else
-        {
-            
-            if(!empty($info['cover']))
-            {
-                $cover = $info['file_id'].'.jpg';
-                $this->save_image_from_web($info['cover'], $this->container->getParameter('matuck_library_tempuploads').$cover);
-            }
-        }
-        if($cover && $cover != '')
-        {
-            $fh->moveCover($cover, $book->getId());
-        }
-
-        $fh->moveBook($info['file_id'], $book->getId());
-        
-        
-        
-        */
             $index = $this->get('ivory_lucene_search')->getIndex('master');
             /* @var $index \Zend\Search\Lucene\Index */
             $results = $index->find('type:book AND title:"'.$title.'" AND author:"'.$author.'"');
