@@ -33,7 +33,10 @@ class BookController extends Controller
         }
         if(!$book->getIsPublic())
         {
-            throw $this->createNotFoundException("The book has been removed by a DMCA request.");
+            $response =  $this->render('matuckLibraryBundle:Pages:dmca.html.twig');
+            $response->setPublic();
+            $response->setSharedMaxAge($this->container->getParameter('cache_time'));
+            return $response;
         }
         $searchTerm= $book->getAuthor()->getName()." ".$book->getTitle();
         $searchTerm=preg_replace('/,/','',$searchTerm);
@@ -176,19 +179,18 @@ class BookController extends Controller
     
     public function deleteAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getEntityManager();
+        
         if(!$book = $em->getRepository('matuckLibraryBundle:Book')->find($id))
         {
             throw $this->createNotFoundException("The book you requested could not be found");
         }
         $title = $book->getTitle();
         $author = $book->getAuthor()->getName();
-        $ratings = $em->getRepository('matuckLibraryBundle:Rating')->findByBook($book);
         
-        foreach($ratings as $rating)
-        {
-            $em->remove($rating);
-        }
+        $query = $em->createQuery('DELETE FROM matuck\LibraryBundle\Entity\Rating r WHERE r.bookid = :id');
+        $query->setParameter('id', $id);
+        $query->execute();
         $tagManager = $this->get('fpn_tag.tag_manager');
         /* @var $tagManager \FPN\TagBundle\Entity\TagManager */
         $tagManager->deleteTagging($book);
