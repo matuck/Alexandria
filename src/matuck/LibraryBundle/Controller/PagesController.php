@@ -33,7 +33,6 @@ class PagesController extends Controller
         //$populartags = $em->getRepository('matuckLibraryBundle:Tag')->populartags()->getQuery()->getMaxResults();
         $featured = $em->getRepository('matuckLibraryBundle:Featured')->PagerOrderbyUpdated()->setMaxPerPage(5)->getCurrentPageResults();
         $bookcount = $bookrepo->totalbookcount();
-        $books = $this->container->getParameter('matuck_library_featured');
         $response = $this->render('matuckLibraryBundle:Pages:index.html.twig', array(
             'newbooks' => $newbooks,
             'topratedbooks' => $topratedbooks,
