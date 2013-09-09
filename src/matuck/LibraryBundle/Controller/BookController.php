@@ -88,6 +88,8 @@ class BookController extends Controller
         }
         $form   = $this->createForm(new BookType(), $book);
         $form->remove('tags');
+        $form->add('newcover', 'file', array("required" => false, "mapped" => false, 'label' => 'Replacement Cover'));
+        $form->add('newfile', 'file', array("required" => false, "mapped" => false, 'label' => 'Replacement Epub'));
         return $this->render('matuckLibraryBundle:Book:edit.html.twig', array(
             'book' => $book,
             'form'   => $form->createView(),
@@ -110,11 +112,64 @@ class BookController extends Controller
         $author = $book->getAuthor()->getName();
         $form = $this->createForm(new BookType(), $book);
         $form->remove('tags');
+        $form->add('newcover', 'file', array("required" => false,"mapped" => false, 'label' => 'Replacement Cover'));
+        $form->add('newfile', 'file', array("required" => false, "mapped" => false, 'label' => 'Replacement Epub'));
         $form->bind($this->getRequest());
         if($form->isValid())
         {
             $em->persist($book);
             $em->flush();
+            
+            $fh = $this->get('matuck_library.filehandler');
+            $tmpuploads = $this->container->getParameter('matuck_library_tempuploads');
+            $tmpid = uniqid();
+            /* @var $fh \matuck\LibraryBundle\Lib\Filehandler\Filehandler */
+            if($newcover = $this->getRequest()->files->get('matuck_librarybundle_booktype')['newcover'])
+            {
+                /* @var $newcover \Symfony\Component\HttpFoundation\File\UploadedFile */
+                $newcover->move($tmpuploads, $tmpid.'.cover');
+                $fh->moveCover($tmpid.'.cover', $book->getId());
+            }
+            
+            if($newfile = $this->getRequest()->files->get('matuck_librarybundle_booktype')['newfile'])
+            {
+                /* @var $newfile \Symfony\Component\HttpFoundation\File\UploadedFile */
+                $newfile->move($tmpuploads, $tmpid);
+                $fh->moveBook($tmpid, $book->getId());
+            }
+            /*$file->move($tempuploadpath, $tempfilename);
+      chmod($tempuploadpath.$tempfilename, 0755);*/
+            
+            
+          /*  $fh = $this->get('matuck_library.filehandler');*/
+        /* @var $fh Filehandler */
+        /*$cover = FALSE;
+        if($file = $this->getRequest()->files->get('form')['newcover'])
+        {*/
+            /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
+        /*    $file->move($this->container->getParameter('matuck_library_tempuploads'), $info['file_id'].'.cover');
+            $cover = $info['file_id'].'.cover';
+            $fh->moveCover($this->container->getParameter('matuck_library_tempuploads').$cover, $book->getId());
+        }
+        else
+        {
+            
+            if(!empty($info['cover']))
+            {
+                $cover = $info['file_id'].'.jpg';
+                $this->save_image_from_web($info['cover'], $this->container->getParameter('matuck_library_tempuploads').$cover);
+            }
+        }
+        if($cover && $cover != '')
+        {
+            $fh->moveCover($cover, $book->getId());
+        }
+
+        $fh->moveBook($info['file_id'], $book->getId());
+        
+        
+        
+        */
             $index = $this->get('ivory_lucene_search')->getIndex('master');
             /* @var $index \Zend\Search\Lucene\Index */
             $results = $index->find('type:book AND title:"'.$title.'" AND author:"'.$author.'"');
