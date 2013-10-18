@@ -18,12 +18,18 @@ matuck_library_catalog_titles:
 matuck_library_catalog_titlesletter:
     pattern: /titles/letter={letter}
     defaults: { _controller: matuckLibraryBundle:Catalog:titlesletter }
+matuck_library_catalog_titlessub:
+    pattern: /titles/{letter}
+    defaults: { _controller: matuckLibraryBundle:Catalog:abc, entity: book }
 matuck_library_catalog_author:
     pattern: /authors
     defaults: { _controller: matuckLibraryBundle:Catalog:abc, entity: author }
 matuck_library_catalog_authorletter:
     pattern: /authors/letter={letter}
     defaults: { _controller: matuckLibraryBundle:Catalog:authorletter }
+matuck_library_catalog_authorsub:
+    pattern: /authors/{letter}
+    defaults: { _controller: matuckLibraryBundle:Catalog:abc, entity: author }
 matuck_library_catalog_authorbooks:
     pattern: /author/{id}
     defaults: { _controller: matuckLibraryBundle:Catalog:authorbooks }
@@ -33,6 +39,9 @@ matuck_library_catalog_series:
 matuck_library_catalog_seriesletter:
     pattern: /series/letter={letter}
     defaults: { _controller: matuckLibraryBundle:Catalog:seriesletter }
+matuck_library_catalog_seriessub:
+    pattern: /series/{letter}
+    defaults: { _controller: matuckLibraryBundle:Catalog:abc, entity: series }
 matuck_library_catalog_seriesbooks:
     pattern: /serie/{id}
     defaults: { _controller: matuckLibraryBundle:Catalog:seriesbooks }
@@ -42,6 +51,9 @@ matuck_library_catalog_tags:
 matuck_library_catalog_tagsletter:
     pattern: /tags/letter={letter}
     defaults: { _controller: matuckLibraryBundle:Catalog:tagsletter }
+matuck_library_catalog_tagssub:
+    pattern: /tags/{letter}
+    defaults: { _controller: matuckLibraryBundle:Catalog:abc, entity: tags }
 matuck_library_catalog_tagsbooks:
     pattern: /tag/{id}
     defaults: { _controller: matuckLibraryBundle:Catalog:tagbooks }

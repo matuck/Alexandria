@@ -15,6 +15,6 @@
 {% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_tagsletter', 'letter': 'all' } %}  
 {% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_tagsletter', 'letter': 'number' } %}
   {% for letter in range('a', 'z') %}
-{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_tagsletter', 'letter': letter } %}
+{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_tagssub', 'letter': letter } %}
   {% endfor %}
   {% endblock %}

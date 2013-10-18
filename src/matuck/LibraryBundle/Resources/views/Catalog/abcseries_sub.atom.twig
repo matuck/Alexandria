@@ -12,9 +12,7 @@
 {% endblock %}
   {% block id %}<id>tag:{{ path('matuck_library_catalog_series') }}</id>{% endblock %}
   {% block entries %}
-{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_seriesletter', 'letter': 'all' } %}  
-{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_seriesletter', 'letter': 'number' } %}
   {% for letter in range('a', 'z') %}
-{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_seriessub', 'letter': letter } %}
+{% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_seriesletter', 'letter': [letter, subletter]|join } %}
   {% endfor %}
   {% endblock %}

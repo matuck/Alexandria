@@ -95,7 +95,7 @@ class CatalogController extends Controller
         return $response;
     }
     
-    public function abcAction($entity)
+    public function abcAction($entity, $letter = '')
     {
         $title = $this->container->getParameter('matuck_library_sitetitle');
         $author = $this->container->getParameter('matuck_library_catalogauthor');
@@ -105,11 +105,23 @@ class CatalogController extends Controller
         {
             throw $this->createNotFoundException();
         }
-        $response = $this->render('matuckLibraryBundle:Catalog:abc'.$entity.'.atom.twig', array(
-            'title' => $title,
-            'author' => $author,
-            'email' => $email,
-        ));
+        if($letter != '')
+        {
+            $response = $this->render('matuckLibraryBundle:Catalog:abc'.$entity.'_sub.atom.twig', array(
+                'title' => $title,
+                'author' => $author,
+                'email' => $email,
+                'letter' => $letter
+            ));
+        }
+        else
+        {
+            $response = $this->render('matuckLibraryBundle:Catalog:abc'.$entity.'.atom.twig', array(
+                'title' => $title,
+                'author' => $author,
+                'email' => $email,
+            ));
+        }
         $response->setPublic();
         $response->setSharedMaxAge($this->container->getParameter('cache_time'));
         return $response;
