@@ -26,7 +26,7 @@ parameters:
     matuck_library_tempuploads: %kernel.root_dir%/../web/uploads/temp/
     matuck_library_filehandler_bookpath: %kernel.root_dir%/../web/uploads/ebooks/
     matuck_library_filehandler_coverpath: %kernel.root_dir%/../web/uploads/covers/
-    matuck_library_filehandler_coverurl: 'http://files.tuebl.ca/covers/{id}.png'
+    matuck_library_filehandler_coverurl: 'http://www.example.com/uploads/covers/{id}.png'
     matuck_library_filehandler_bookurl: %kernel.root_dir%/../web/uploads/ebooks/{id}.epub
     matuck_library_googleapi_keys:
         - 'somekey1'
