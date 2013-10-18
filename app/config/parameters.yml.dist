@@ -13,3 +13,37 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: ~
+    database_name: Alexandria
+    database_user: root
+    database_password: ~
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+
+    liip_themes: ['default']
+    liip_active_theme: 'default'
+    liip_autodetect_theme: true
+    liip_load_controllers: false
+    
+    cache_time: 600
+    matuck_library_sitetitle: Alexandria
+    matuck_library_catalogauthor: Alexandria
+    matuck_library_catalogemail: someone@example.com
+    matuck_library_filehandler: 'Filesystem'
+    matuck_library_tempuploads: %kernel.root_dir%/../web/uploads/temp/
+    matuck_library_filehandler_bookpath: %kernel.root_dir%/../web/uploads/ebooks/
+    matuck_library_filehandler_coverpath: %kernel.root_dir%/../web/uploads/covers/
+    matuck_library_filehandler_coverurl: 'http://files.tuebl.ca/covers/{id}.png'
+    matuck_library_filehandler_bookurl: %kernel.root_dir%/../web/uploads/ebooks/{id}.epub
+    matuck_library_googleapi_keys:
+        - 'somekey1'
+        - 'somkey2'
+
