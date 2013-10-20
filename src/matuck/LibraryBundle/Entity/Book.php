@@ -75,7 +75,7 @@ class Book implements Taggable
     /**
      * @var Integer
      *
-     * @ORM\Column(name="rated", type="bigint", nullable=true)
+     * @ORM\Column(name="rated", type="bigint", nullable=true, cascade={"all"})
      */
     private $rated;
 
@@ -112,7 +112,7 @@ class Book implements Taggable
     private $tags;
     
     /**
-     * @ORM\OneToOne(targetEntity="Featured")
+     * @ORM\OneToOne(targetEntity="Featured", cascade={"all"})
      */
     private $featured;
             
