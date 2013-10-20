@@ -177,9 +177,13 @@ class BookController extends Controller
         $title = $book->getTitle();
         $author = $book->getAuthor()->getName();
         
-        $query = $em->createQuery('DELETE FROM matuck\LibraryBundle\Entity\Rating r WHERE r.bookid = :id');
-        $query->setParameter('id', $id);
-        $query->execute();
+        $ratings = $em->getRepository('matuckLibraryBundle:Rating')->findByBook($book);
+        
+        foreach($ratings as $rating)
+        {
+            $em->remove($rating);
+        }
+        $em->flush();
         $tagManager = $this->get('fpn_tag.tag_manager');
         /* @var $tagManager \FPN\TagBundle\Entity\TagManager */
         $tagManager->deleteTagging($book);

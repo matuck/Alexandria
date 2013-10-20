@@ -75,7 +75,7 @@ class Book implements Taggable
     /**
      * @var Integer
      *
-     * @ORM\Column(name="rated", type="bigint", nullable=true, cascade={"all"})
+     * @ORM\Column(name="rated", type="bigint", nullable=true)
      */
     private $rated;
 
