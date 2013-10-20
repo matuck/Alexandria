@@ -12,6 +12,15 @@
 {% endblock %}
   {% block id %}<id>tag:{{ path('matuck_library_catalog_series') }}</id>{% endblock %}
   {% block entries %}
+      <entry>
+        <title>All {{ letter|capitalize }}</title>
+        <link rel="http://opds-spec.org/sort/new" 
+              href="{{ path('matuck_library_catalog_seriesletter', {'letter': letter}) }}"
+              type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+        <updated>2012-01-09T22:41:00Z</updated>
+        <id>catalog_series_{{letter}}</id>
+        <content type="text">Series starting with the letter {{ letter|capitalize }}</content>
+      </entry>
   {% for letter in range('a', 'z') %}
 {% include 'matuckLibraryBundle:Catalog:letterentry.atom.twig' with {'route': 'matuck_library_catalog_seriesletter', 'letter': [letter, subletter]|join } %}
   {% endfor %}

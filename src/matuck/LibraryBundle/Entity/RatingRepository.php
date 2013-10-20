@@ -29,7 +29,7 @@ class RatingRepository extends EntityRepository
                 ->where('r.bookid = :book')
                 ->setParameter('book', $book->getId());
         
-        return $qb->getQuery()->execute();
+        return $qb->getQuery()->getResult();
     }
     
     public function totalratingcount()
