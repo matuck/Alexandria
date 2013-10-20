@@ -27,7 +27,7 @@ class RatingRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('r')
                 ->where('r.bookid = :book')
-                ->setParameter('book', $book);
+                ->setParameter('book', $book->getId());
         
         return $qb->getQuery()->execute();
     }
