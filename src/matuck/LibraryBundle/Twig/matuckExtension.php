@@ -2,13 +2,19 @@
 namespace matuck\LibraryBundle\Twig;
 
 use matuck\LibraryBundle\Lib\Filehandler\Filehandler;
+use FPN\TagBundle\Entity\TagManager;
 
 class matuckExtension extends \Twig_Extension
 {
     private $fh;
- 
-    public function __construct(Filehandler $fh) {
+    protected $fpntag;
+    protected $nsfwtags;
+
+    public function __construct(Filehandler $fh, TagManager $fpntag,$nsfwtags)
+    {
         $this->fh = $fh;
+        $this->fpntag = $fpntag;
+        $this->nsfwtags = $nsfwtags;
     }
     
     public function getFilters()
@@ -22,6 +28,7 @@ class matuckExtension extends \Twig_Extension
     {
         return array(
             'coverurl' => new \Twig_Function_Method($this, 'coverurl'),
+            'nsfw' => new \Twig_Function_Method($this, 'nsfw'),
         );
     }
 
@@ -51,6 +58,39 @@ class matuckExtension extends \Twig_Extension
     public function coverurl($id)
     {
         return $this->fh->getCover($id);
+    }
+    
+    public function nsfw($book)
+    {
+        $tags = array();
+        if($book instanceof \matuck\LibraryBundle\Entity\Book)
+        {
+            $this->fpntag->loadTagging($book);
+            $booktags = $book->getTags();
+            foreach($booktags as $booktag)
+            {
+                /* @var $booktag \matuck\LibraryBundle\Entity\Tag */
+                $tags[] = $booktag->getName();
+            }
+        }
+        else if($book instanceof \Zend\Search\Lucene\Search\QueryHit)
+        {
+            $tags = unserialize($book->tags);
+            
+        }
+        else
+        {
+            throw new Exception(sprintf('The object of type %s is not supported. Please pass in either a Book entity or a QueryHit', get_class($book)));
+        }
+        
+        $tags = array_map('strtolower', $tags);
+        foreach($this->nsfwtags as $tocheck)
+        {
+            if(in_array(strtolower($tocheck), $tags))
+            {
+                return 'nsfw';
+            }
+        }
     }
 
     public function getName()

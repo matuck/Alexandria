@@ -1,4 +1,4 @@
-<div class="row" class="border-bottom: 1px solid #eee; margin-bottom:10px;">
+<div class="row {{ nsfw(book)}}" class="border-bottom: 1px solid #eee; margin-bottom:10px;">
     <h2 style="line-height: 27px;"><a style="color:#000" href="{{ path('matuck_library_book_show', { 'id': book.getId() }) }}">{{ book.getTitle() }}</a></h2>
     <h3 style="line-height: 27px;">Written By: <a href="{{ path('matuck_library_browse_author', { 'id': book.getAuthor().getId() }) }}">{{ book.getAuthor().getName() }}</a></h3>
 

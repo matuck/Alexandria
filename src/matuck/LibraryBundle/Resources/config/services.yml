@@ -18,8 +18,15 @@ services:
         class: matuck\LibraryBundle\Twig\matuckExtension
         arguments: 
             fh: "@matuck_library.filehandler"
+            fpntag: "@fpn_tag.tag_manager"
+            nsfwtags: %matuck_library_nsfwtags%
         tags:
             - { name: twig.extension }
+    matuck_library.searchindexer:
+        class: matuck\LibraryBundle\Lib\Indexer
+        arguments:
+             index: "@ivory_lucene_search"
+             fpntag: "@fpn_tag.tag_manager"
 #    matuck_library.example:
 #        class: %matuck_library.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

@@ -59,7 +59,17 @@ class BookController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $tagManager = $this->get('fpn_tag.tag_manager');
         /* @var $tagManager \FPN\TagBundle\Entity\TagManager */
-        $book = $em->getRepository('matuckLibraryBundle:Book')->find($formdata['book_id']);
+        
+        if(!$book = $em->getRepository('matuckLibraryBundle:Book')->find($formdata['book_id']))
+        {
+            throw new \Doctrine\ORM\EntityNotFoundException();
+        }
+        
+        $indexer = $this->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+        
+        $indexer->deleteBook($book);
+        
         $tagManager->loadTagging($book);
         /* @var $book Book */
         if($formdata['tags'] != NULL && $formdata['tags'] != '')
@@ -79,6 +89,7 @@ class BookController extends Controller
         }
 
         $tagManager->saveTagging($book);
+        $indexer->indexBook($book);
         return $this->redirect($this->generateUrl('matuck_library_book_show', array('id' => $formdata['book_id'])));
     }
 
@@ -113,6 +124,10 @@ class BookController extends Controller
         }
         $title = $book->getTitle();
         $author = $book->getAuthor()->getName();
+        
+        $indexer = $this->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+        $indexer->deleteBook($book);
         $form = $this->createForm(new BookType(), $book);
         $form->remove('tags');
         $form->add('newcover', 'file', array("required" => false,"mapped" => false, 'label' => 'Replacement Cover'));
@@ -140,37 +155,11 @@ class BookController extends Controller
                 $newfile->move($tmpuploads, $tmpid);
                 $fh->moveBook($tmpid, $book->getId());
             }
-            
-            $index = $this->get('ivory_lucene_search')->getIndex('master');
-            /* @var $index \Zend\Search\Lucene\Index */
-            $results = $index->find('type:book AND title:"'.$title.'" AND author:"'.$author.'"');
-            foreach($results as $doc)
-            {
-                /* @var $doc Document */
-                if($book->getId() == $doc->objid && $doc->type == 'book')
-                {
-                    $index->delete($doc->id);
-                    $index->commit();
-                    $document = new Document();
-                    $document->addField(Field::keyword('type', 'book'));
-                    $document->addField(Field::binary('objid', $book->getId()));
-                    $document->addField(Field::text('title', $book->getTitle()));
-                    $document->addField(Field::text('author', $book->getAuthor()->getName()));
-                    $document->addField(Field::binary('authorid', $book->getAuthor()->getId()));
-                    if($series = $book->getSerie())
-                    {
-                        $document->addField(Field::text('series', $series->getName()));
-                        $document->addField(Field::binary('serieid', $series->getId()));
-                        $document->addField(Field::unIndexed('serieNbr', $book->getSerieNbr()));
-                    }
-                    $document->addField(Field::unIndexed('summary', $book->getSummary()));
-                    $index->addDocument($document);
-                    $index->commit();
-                }
-            }
+            $indexer->deleteBook($book);
             return $this->redirect($this->generateUrl('matuck_library_book_show', array('id' => $id)));
         }
-
+        
+        $indexer->indexBook($book);
         return $this->render('matuckLibraryBundle:Book:edit.html.twig', array(
             'book' => $book,
             'form'   => $form->createView(),
@@ -194,6 +183,11 @@ class BookController extends Controller
         $tagManager = $this->get('fpn_tag.tag_manager');
         /* @var $tagManager \FPN\TagBundle\Entity\TagManager */
         $tagManager->deleteTagging($book);
+        
+        $indexer = $this->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+        $indexer->deleteBook($book);
+        
         $em->remove($book);
         ////delete book files
         $fh = $this->get('matuck_library.filehandler');
@@ -202,18 +196,6 @@ class BookController extends Controller
         $fh->deleteCover($book->getId());
         
         $em->flush();
-        $index = $this->get('ivory_lucene_search')->getIndex('master');
-        /* @var $index \Zend\Search\Lucene\Index */
-        $results = $index->find('type:book AND title:"'.$title.'" AND author:"'.$author.'"');
-        foreach($results as $doc)
-        {
-            /* @var $doc Document */
-            if($book->getId() == $doc->objid && $doc->type == 'book')
-            {
-                $index->delete($doc->id);
-                $index->commit();
-            }
-        }
         return $this->redirect($this->generateUrl('matuck_library_homepage'));
     }
   

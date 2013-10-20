@@ -113,6 +113,8 @@ class AuthorController extends Controller
         {
             throw $this->createNotFoundException("The Author you requested could not be found");
         }
+        $indexer = $this->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
         $iphash = $this->get('matuck_library.iphash')->get();
         $isfav = $em->getRepository('matuckLibraryBundle:Authorvotes')->findbyauthorandip($id, $iphash);
         $pager = $em->getRepository('matuckLibraryBundle:book')->findByAuthor($author);
@@ -163,6 +165,7 @@ class AuthorController extends Controller
             throw $this->createNotFoundException("The author you requested could not be found");
         }
         /* @var $author Author */
+        
         $form = $this->createForm(new AuthorType(), $author);
         $form->remove('createdAt');
         $form->remove('updatedAt');
@@ -173,25 +176,20 @@ class AuthorController extends Controller
             $author->setUpdatedAt(new \DateTime);
             $em->persist($author);
             $em->flush();
-            $index = $this->get('ivory_lucene_search')->getIndex('master');
-            /* @var $index \Zend\Search\Lucene\Index */
-            $results = $index->find('type:author AND name:"'.$author.'"');
-            foreach($results as $doc)
+            $indexer = $this->get('matuck_library.searchindexer');
+            /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+            $indexer->deleteAuthor($origauthor);
+            $indexer->indexAuthor($author);
+            $books = $em->getRepository('matuckLibraryBundle:Book')->findByAuthor($author);
+            /* @var $books \Pagerfanta\Pagerfanta */
+            $books->setMaxPerPage($books->getNbResults());
+            $books->setCurrentPage(1);
+            foreach($books->getCurrentPageResults() as $book)
             {
-                /* @var $doc Document */
-                if($author->getId() == $doc->objid && $doc->type == 'author')
-                {
-                    $index->delete($doc->id);
-                    $index->commit();
-                }
+                $indexer->deleteBook($book);
+                $indexer->indexBook($book);
             }
-            $doc = new Document();
-            $doc->addField(Field::keyword('type', 'author'));
-            $doc->addField(Field::binary('objid', $author->getId()));
-            $doc->addField(Field::text('name', $author->getName()));
-            $doc->addField(Field::text('bio', $author->getBiography()));
-            $index->addDocument($doc);
-            $index->commit();
+            
             return $this->redirect($this->generateUrl('matuck_library_author_show', array('id' => $id)));
         }
 
@@ -232,15 +230,9 @@ class AuthorController extends Controller
                 $author->setUpdatedAt(new \DateTime);
                 $em->persist($author);
                 $em->flush();
-                $index = $this->get('ivory_lucene_search')->getIndex('master');
-                /* @var $index \Zend\Search\Lucene\Index */
-                $doc = new Document();
-                $doc->addField(Field::keyword('type', 'author'));
-                $doc->addField(Field::binary('objid', $author->getId()));
-                $doc->addField(Field::text('name', $author->getName()));
-                $doc->addField(Field::text('bio', $author->getBiography()));
-                $index->addDocument($doc);
-                $index->commit();
+                $indexer = $this->get('matuck_library.searchindexer');
+                /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+                $indexer->indexAuthor($author);
                 return $this->redirect($this->generateUrl('matuck_library_author_show', array('id' => $author->getId())));
             }
         }
@@ -268,19 +260,11 @@ class AuthorController extends Controller
                 $em->persist($book);
             }
             $em->flush();
+            
+            $indexer = $this->get('matuck_library.searchindexer');
+            /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+            $indexer->deleteAuthor($author);
             $em->remove($author);
-            $index = $this->get('ivory_lucene_search')->getIndex('master');
-            /* @var $index \Zend\Search\Lucene\Index */
-            $results = $index->find('type:author AND author:"'.$author->getName().'"');
-            foreach($results as $doc)
-            {
-                /* @var $doc Document */
-                if($author->getId() == $doc->objid && $doc->type == 'author')
-                {
-                    $index->delete($doc->id);
-                    $index->commit();
-                }
-            }
             $em->flush();
             $this->get('session')->getFlashBag()->add('notice', sprintf('Authors %s have been merged into author %s', trim($author->getName()), trim($to->getName())));
             return $this->redirect($this->generateUrl('matuck_library_author_show', array('id' => $to->getId())));
@@ -293,7 +277,19 @@ class AuthorController extends Controller
     
     public function deleteAction(Author $author)
     {
+        $indexer = $this->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+        $indexer->deleteAuthor($author);
         $em = $this->getDoctrine()->getEntityManager();
+        $books = $em->getRepository('matuckLibraryBundle:Book')->findByAuthor($author);
+        /* @var $books \Pagerfanta\Pagerfanta */
+        $books->setMaxPerPage($books->getNbResults());
+        $books->setCurrentPage(1);
+        foreach($books->getCurrentPageResults() as $book)
+        {
+            $indexer->deleteBook($book);
+            $indexer->indexBook($book);
+        }
         $em->remove($author);
         $em->flush();
         $this->get('session')->getFlashBag()->add('notice', sprintf('Authors %s has been deleted.', trim($author->getName())));

@@ -78,14 +78,9 @@ class SerieController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($serie);
             $em->flush();
-            $index = $this->get('ivory_lucene_search')->getIndex('master');
-            /* @var $index \Zend\Search\Lucene\Index */
-            $doc = new Document();
-            $doc->addField(Field::keyword('type', 'serie'));
-            $doc->addField(Field::binary('objid', $serie->getId()));
-            $doc->addField(Field::text('name', $serie->getName()));
-            $index->addDocument($doc);
-            $index->commit();
+            $indexer = $this->get('matuck_library.searchindexer');
+            /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+            $indexer->indexSeries($serie);
             return $this->redirect($this->generateUrl('matuck_library_serie_show', array('id' => $serie->getId())));
         }
         else
@@ -120,6 +115,7 @@ class SerieController extends Controller
     
     public function updateAction(Request $request, $id)
     {
+        
         $em = $this->getDoctrine()->getManager();
         $serie = $em->getRepository('matuckLibraryBundle:Serie')->find($id);
 
@@ -127,6 +123,10 @@ class SerieController extends Controller
             throw $this->createNotFoundException('Unable to find Serie entity.');
         }
         /* @var $serie Serie */
+        
+        $indexer = $this->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+        $indexer->deleteSeries($serie);
         $emptySerie = new Serie();
         $editForm = $this->createForm(new SerieType(), $emptySerie);
         $editForm->bind($request);
@@ -136,29 +136,23 @@ class SerieController extends Controller
             $serie->setUpdatedAt(new \DateTime());
             $serie->setName($emptySerie->getName());
             $url = $this->generateUrl('matuck_library_serie_show', array('id' => $id));
+            
             $em->persist($serie);
             $em->flush();
-            $index = $this->get('ivory_lucene_search')->getIndex('master');
-            /* @var $index \Zend\Search\Lucene\Index */
-            $results = $index->find('type:serie AND name:"'.$serie.getName().'"');
-            foreach($results as $doc)
+            $books = $em->getRepository('matuckLibraryBundle:Book')->findBySerie($serie);
+            /* @var $books \Pagerfanta\Pagerfanta */
+            $books->setMaxPerPage($books->getNbResults());
+            $books->setCurrentPage(1);
+            foreach($books->getCurrentPageResults() as $book)
             {
-                /* @var $doc Document */
-                if($serie->getId() == $doc->objid && $doc->type == 'serie')
-                {
-                    $index->delete($doc->id);
-                    $index->commit();
-                }
+                $indexer->deleteBook($book);
+                $indexer->indexBook($book);
             }
-            $doc = new Document();
-            $doc->addField(Field::keyword('type', 'serie'));
-            $doc->addField(Field::binary('objid', $serie->getId()));
-            $doc->addField(Field::text('name', $serie->getName()));
-            $index->addDocument($doc);
-            $index->commit();
+            $indexer->indexSeries($serie);
             return $this->redirect($url);
         }
 
+        $indexer->indexSeries($serie);
         return $this->render('matuckLibraryBundle:Serie:edit.html.twig', array(
             'serie'      => $serie,
             'edit_form'   => $editForm->createView(),
@@ -174,18 +168,19 @@ class SerieController extends Controller
             throw $this->createNotFoundException('Unable to find Serie entity.');
         }
         
-        $index = $this->get('ivory_lucene_search')->getIndex('master');
-        /* @var $index \Zend\Search\Lucene\Index */
-        $results = $index->find('type:serie AND name:"'.$serie->getName().'"');
-        foreach($results as $doc)
+        $indexer = $this->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+        
+        $books = $em->getRepository('matuckLibraryBundle:Book')->findBySerie($serie);
+        /* @var $books \Pagerfanta\Pagerfanta */
+        $books->setMaxPerPage($books->getNbResults());
+        $books->setCurrentPage(1);
+        foreach($books->getCurrentPageResults() as $book)
         {
-            /* @var $doc Document */
-            if($book->getId() == $doc->objid && $doc->type == 'serie')
-            {
-                $index->delete($doc->id);
-                $index->commit();
-            }
+            $indexer->deleteBook($book);
+            $indexer->indexBook($book);
         }
+        $indexer->deleteSeries($serie);
         $em->remove($serie);
         $em->flush();
         return $this->redirect($this->generateUrl('matuck_library_serie'));

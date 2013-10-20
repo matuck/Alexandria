@@ -26,27 +26,25 @@ class IndexAuthorsCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
         /* @var $em \Doctrine\ORM\EntityManager */
-        $index = $this->getContainer()->get('ivory_lucene_search')->getIndex('master');
-        /* @var $index \Zend\Search\Lucene\Index */
+        $em->getConnection()->getConfiguration()->setSQLLogger(null);
+        
+        $indexer = $this->getContainer()->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+        
         $authorrepo = $em->getRepository('matuckLibraryBundle:Author');
         /* @var $authorrepo AuthorRepository */
         $allauthors = $authorrepo->findAll();
         $count = 0;
         foreach($allauthors as $author)
         {
-            $doc = new Document();
-            $doc->addField(Field::keyword('type', 'author'));
-            $doc->addField(Field::binary('objid', $author[0]->getId()));
-            $doc->addField(Field::text('name', $author[0]->getName()));
-            $doc->addField(Field::text('bio', $author[0]->getBiography()));
-            $index->addDocument($doc);
+            $indexer->indexAuthor($author[0]);
             echo sprintf('%s was added to the index', $author[0]->getName())."\n";
             $count++;
             $em->detach($author[0]);
         }
-        $index->commit();
+        $indexer->commit();
         echo "\n\nStarting to optimize the index.";
-        $index->optimize();
+        $indexer->optimize();
         $output->writeln(' ');
         $output->writeln(sprintf('%d authors were added to the index', $count));
     }

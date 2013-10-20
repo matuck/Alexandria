@@ -22,9 +22,9 @@ class IndexOptimizeCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $indexname = $input->getArgument('index');
-        $index = $this->getContainer()->get('ivory_lucene_search')->getIndex($indexname);
-        /* @var $index \Zend\Search\Lucene\Index */
-        $index->optimize();
+        $indexer = $this->getContainer()->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+        $indexer->optimize();
         $output->writeln(sprintf('%s was optimized successfully', $indexname));
     }
 }

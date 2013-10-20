@@ -8,8 +8,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use matuck\LibraryBundle\Entity\Serie;
 use matuck\LibraryBundle\Entity\SerieRepository;
-use Ivory\LuceneSearchBundle\Model\Document;
-use Ivory\LuceneSearchBundle\Model\Field;
 
 class IndexSeriesCommand extends ContainerAwareCommand
 {
@@ -26,26 +24,24 @@ class IndexSeriesCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
         /* @var $em \Doctrine\ORM\EntityManager */
-        $index = $this->getContainer()->get('ivory_lucene_search')->getIndex('master');
-        /* @var $index \Zend\Search\Lucene\Index */
+        $em->getConnection()->getConfiguration()->setSQLLogger(null);
+        
+        $indexer = $this->getContainer()->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
         $serierepo = $em->getRepository('matuckLibraryBundle:Serie');
         /* @var $serierepo SerieRepository */
         $allseries = $serierepo->findAll();
         $count = 0;
         foreach($allseries as $series)
         {
-            $doc = new Document();
-            $doc->addField(Field::keyword('type', 'serie'));
-            $doc->addField(Field::binary('objid', $series[0]->getId()));
-            $doc->addField(Field::text('name', $series[0]->getName()));
-            $index->addDocument($doc);
+            $indexer->indexSeries($series[0]);
             echo sprintf('%s was added to the index', $series[0]->getName())."\n";
             $count++;
             $em->detach($series[0]);
         }
-        $index->commit();
+        $indexer->commit();
         echo "\n\nStarting to optimize the index.";
-        $index->optimize();
+        $indexer->optimize();
         $output->writeln(' ');
         $output->writeln(sprintf('%d series were added to the index', $count));
     }

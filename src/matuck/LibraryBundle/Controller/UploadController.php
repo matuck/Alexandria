@@ -122,11 +122,12 @@ class UploadController extends Controller
      */
     public function submitAction()
     {
+        $indexer = $this->get('matuck_library.searchindexer');
+        /* @var $indexer \matuck\LibraryBundle\Lib\Indexer */
+        
         $info = $this->getRequest()->request->get('form');
         $em = $this->getDoctrine()->getManager();
         $book = new Book();
-        $index = $this->get('ivory_lucene_search')->getIndex('master');
-        /* @var $index \Zend\Search\Lucene\Index */
         if(!$author = $em->getRepository('matuckLibraryBundle:Author')->findOneByName($info['author']))
         {
             $author = new Author();
@@ -135,13 +136,7 @@ class UploadController extends Controller
             $author->setUpdatedAt(new \DateTime);
             $em->persist($author);
             $em->flush();
-            $doc = new Document();
-            $doc->addField(Field::keyword('type', 'author'));
-            $doc->addField(Field::binary('objid', $author->getId()));
-            $doc->addField(Field::text('name', $author->getName()));
-            $doc->addField(Field::text('bio', $author->getBiography()));
-            $index->addDocument($doc);
-            $index->commit();
+            $indexer->indexAuthor($author);
         }
         $book->setAuthor($author);
         if($info['series'] != NULL && $info['series'] != '')
@@ -154,12 +149,7 @@ class UploadController extends Controller
                 $serie->setUpdatedAt(new \DateTime);
                 $em->persist($serie);
                 $em->flush();
-                $doc2 = new Document();
-                $doc2->addField(Field::keyword('type', 'serie'));
-                $doc2->addField(Field::binary('objid', $serie->getId()));
-                $doc2->addField(Field::text('name', $serie->getName()));
-                $index->addDocument($doc2);
-                $index->commit();
+                $indexer->indexSeries($serie);
             }
             $book->setSerie($serie);
             $book->setSerieNbr($info['series_order']);
@@ -173,21 +163,7 @@ class UploadController extends Controller
         $em->persist($book);
         $em->flush();
         
-        $doc3 = new Document();
-        $doc3->addField(Field::keyword('type', 'book'));
-        $doc3->addField(Field::binary('objid', $book->getId()));
-        $doc3->addField(Field::text('title', $book->getTitle()));
-        $doc3->addField(Field::text('author', $author->getName()));
-        $doc3->addField(Field::binary('authorid', $book->getAuthor()->getId()));
-        if(isset($serie))
-        {
-            $doc3->addField(Field::text('series', $serie->getName()));
-            $doc3->addField(Field::binary('serieid', $serie->getId()));
-            $doc3->addField(Field::unIndexed('serieNbr', $book->getSerieNbr()));
-        }
-        $doc3->addField(Field::unIndexed('summary', $book->getSummary()));
-        $index->addDocument($doc3);
-        $index->commit();
+        $indexer->indexBook($book);
         
         $fh = $this->get('matuck_library.filehandler');
         /* @var $fh Filehandler */
