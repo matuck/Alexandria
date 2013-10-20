@@ -74,7 +74,7 @@ class Indexer
     public function deleteBook(Book $book)
     {
         
-        $results = $index->find('type:book AND title:"'.$book->getTitle().'" AND author:"'.$book->getAuthor()->getName().'"');
+        $results = $this->index->find('type:book AND title:"'.$book->getTitle().'" AND author:"'.$book->getAuthor()->getName().'"');
         foreach($results as $doc)
         {
             /* @var $doc Document */
@@ -96,7 +96,15 @@ class Indexer
     
     public function deleteSeries(Serie $series)
     {
-        
+        $results = $this->index->find('type:serie AND name:"'.$series->getName().'"');
+        foreach($results as $doc)
+        {
+            /* @var $doc Document */
+            if($series->getId() == $doc->objid && $doc->type == 'serie')
+            {
+                $this->index->delete($doc->id);
+            }
+        }
     }
     
     public function commit()
