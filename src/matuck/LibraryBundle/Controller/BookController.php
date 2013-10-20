@@ -181,6 +181,7 @@ class BookController extends Controller
         
         foreach($ratings as $rating)
         {
+            echo $rating->getRating();
             $em->remove($rating);
         }
         $em->flush();
