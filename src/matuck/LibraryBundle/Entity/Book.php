@@ -92,7 +92,7 @@ class Book implements Taggable
     /**
      * @var \Serie
      *
-     * @ORM\ManyToOne(targetEntity="Serie", inversedBy="books", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="Serie", inversedBy="books")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
      * })
