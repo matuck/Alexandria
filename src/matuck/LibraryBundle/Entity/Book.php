@@ -45,9 +45,9 @@ class Book implements Taggable
     private $summary;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="serie_nbr", type="bigint", nullable=true)
+     * @ORM\Column(name="serie_nbr", type="string", length=10, nullable=true)
      */
     private $serieNbr;
 
