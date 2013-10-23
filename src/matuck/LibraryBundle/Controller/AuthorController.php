@@ -26,7 +26,10 @@ class AuthorController extends Controller
         $form   = $this->createForm(new AuthorType, $author);
         $form->remove('createdAt');
         $form->remove('updatedAt');
-        $form->remove('name');
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN'))
+        {
+            $form->remove('name');
+        }
         $response = $this->render('matuckLibraryBundle:Author:bio.html.twig', array(
             'author' => $author,
             'form'   => $form->createView(),
