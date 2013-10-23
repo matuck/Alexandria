@@ -5,11 +5,11 @@ matuck_library_author_show:
     pattern: /author/{id}
     defaults: { _controller: matuckLibraryBundle:Author:show }
 matuck_library_author_edit:
-    pattern: /admin/author/edit/{id}
-    defaults: { _controller: matuckLibraryBundle:Author:edit }
+    pattern: /admin/author/edit/{id}/{redirect}
+    defaults: { _controller: matuckLibraryBundle:Author:edit, redirect: '' }
 matuck_library_author_update:
-    pattern: /admin/author/update/{id}
-    defaults: { _controller: matuckLibraryBundle:Author:update }
+    pattern: /admin/author/update/{id}/{redirect}
+    defaults: { _controller: matuckLibraryBundle:Author:update, redirect: '' }
 matuck_library_author_new:
     pattern: /admin/author/new
     defaults: { _controller: matuckLibraryBundle:Author:new }

@@ -135,7 +135,7 @@ class AuthorController extends Controller
         return $response;
     }
     
-    public function editAction($id)
+    public function editAction($id, $redirect = '')
     {
         $em = $this->getDoctrine()->getManager();
         if(!$author = $em->getRepository('matuckLibraryBundle:Author')->find($id))
@@ -153,10 +153,11 @@ class AuthorController extends Controller
         return $this->render('matuckLibraryBundle:Author:edit.html.twig', array(
             'author' => $author,
             'form'   => $form->createView(),
+            'redirect' => $redirect,
         ));
     }
     
-    public function updateAction($id)
+    public function updateAction($id, $redirect = '')
     {
         $em = $this->getDoctrine()->getManager();
         if($this->getRequest()->getMethod() != 'POST')
@@ -168,12 +169,12 @@ class AuthorController extends Controller
             throw $this->createNotFoundException("The author you requested could not be found");
         }
         /* @var $author Author */
-        
+        $origauthor = $author;
         $form = $this->createForm(new AuthorType(), $author);
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->bind($this->getRequest());
-        $author = $author->getName();
+        
         if($form->isValid())
         {
             $author->setUpdatedAt(new \DateTime);
@@ -192,13 +193,27 @@ class AuthorController extends Controller
                 $indexer->deleteBook($book);
                 $indexer->indexBook($book);
             }
+            $url = '';
+            if($redirect != '')
+            {
+                $split = explode(':', $redirect);
+                if($split[0] == 'bookedit')
+                {
+                    $url = $this->generateUrl('matuck_library_book_edit', array('id' => $split[1]));
+                }
+            }
+            if($url == '' || $url == NULL)
+            {
+                $url = $this->generateUrl('matuck_library_author_show', array('id' => $id));
+            }
             
-            return $this->redirect($this->generateUrl('matuck_library_author_show', array('id' => $id)));
+            return $this->redirect($url);
         }
 
         return $this->render('matuckLibraryBundle:Author:edit.html.twig', array(
             'author' => $author,
             'form'   => $form->createView(),
+            'redirect' => $redirect,
         ));
     }
     
