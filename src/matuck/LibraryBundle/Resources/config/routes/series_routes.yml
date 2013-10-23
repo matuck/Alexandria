@@ -11,11 +11,11 @@ matuck_library_serie_show:
     pattern: /serie/{id}
     defaults: { _controller: matuckLibraryBundle:Serie:show }
 matuck_library_serie_edit:
-    pattern: /admin/serie/edit/{id}
-    defaults: { _controller: matuckLibraryBundle:Serie:edit }
+    pattern: /admin/serie/edit/{id}/{redirect}
+    defaults: { _controller: matuckLibraryBundle:Serie:edit, redirect: '' }
 matuck_library_serie_update:
-    pattern: /admin/serie/update/{id}
-    defaults: { _controller: matuckLibraryBundle:Serie:update }
+    pattern: /admin/serie/update/{id}/{redirect}
+    defaults: { _controller: matuckLibraryBundle:Serie:update, redirect: '' }
 matuck_library_serie_delete:
     pattern: /admin/serie/delete/{id}
     defaults: { _controller: matuckLibraryBundle:Serie:delete }

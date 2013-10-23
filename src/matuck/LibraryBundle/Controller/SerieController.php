@@ -94,7 +94,7 @@ class SerieController extends Controller
         }
     }
     
-    public function editAction($id)
+    public function editAction($id, $redirect = '')
     {
         $em = $this->getDoctrine()->getManager();
         $serie = $em->getRepository('matuckLibraryBundle:Serie')->find($id);
@@ -110,10 +110,11 @@ class SerieController extends Controller
         return $this->render('matuckLibraryBundle:Serie:edit.html.twig', array(
             'serie'      => $serie,
             'edit_form'   => $editForm->createView(),
+            'redirect' => $redirect,
         ));
     }
     
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, $id, $redirect = '')
     {
         
         $em = $this->getDoctrine()->getManager();
@@ -135,8 +136,19 @@ class SerieController extends Controller
         {
             $serie->setUpdatedAt(new \DateTime());
             $serie->setName($emptySerie->getName());
-            $url = $this->generateUrl('matuck_library_serie_show', array('id' => $id));
-            
+            $url = '';
+            if($redirect != '')
+            {
+                $split = explode(':', $redirect);
+                if($split[0] == 'bookedit')
+                {
+                    $url = $this->generateUrl('matuck_library_book_edit', array('id' => $split[1]));
+                }
+            }
+            if($url == '' || $url == NULL)
+            {
+                $url = $this->generateUrl('matuck_library_serie_show', array('id' => $id));
+            }
             $em->persist($serie);
             $em->flush();
             $books = $em->getRepository('matuckLibraryBundle:Book')->findBySerie($serie);
@@ -156,6 +168,7 @@ class SerieController extends Controller
         return $this->render('matuckLibraryBundle:Serie:edit.html.twig', array(
             'serie'      => $serie,
             'edit_form'   => $editForm->createView(),
+            'redirect' => $redirect,
         ));
     }
     

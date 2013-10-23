@@ -19,7 +19,6 @@ class BookType extends AbstractType
             ->add('createdAt')
             ->add('updatedAt')
             ->add('rated')
-            ->add('tags')
             ->add('author', 'entity', array(
                    'class' => 'matuckLibraryBundle:Author',
                    'query_builder' => function($er) {
