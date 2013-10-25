@@ -3,6 +3,7 @@
 namespace matuck\LibraryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Chillingdmca
@@ -23,29 +24,37 @@ class Chillingdmca
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="book_title", type="string", length=255, nullable=true)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @ORM\Column(name="book_title", type="string", length=255, nullable=false)
      */
     private $bookTitle;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="book_author", type="string", length=255, nullable=true)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @ORM\Column(name="book_author", type="string", length=255, nullable=false)
      */
     private $bookAuthor;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="dmca_name", type="string", length=255, nullable=true)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @ORM\Column(name="dmca_name", type="string", length=255, nullable=false)
      */
     private $dmcaName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="dmca_email", type="string", length=255, nullable=true)
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
+     * @ORM\Column(name="dmca_email", type="string", length=255, nullable=false)
      */
     private $dmcaEmail;
 

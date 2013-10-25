@@ -14,7 +14,7 @@ class ChillingdmcaType extends AbstractType
             ->add('bookTitle')
             ->add('bookAuthor')
             ->add('dmcaName')
-            ->add('dmcaEmail')
+            ->add('dmcaEmail', 'email')
             ->add('ipAddress')
             ->add('createdAt')
             ->add('updatedAt')

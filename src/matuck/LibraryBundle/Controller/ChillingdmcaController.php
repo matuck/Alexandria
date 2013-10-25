@@ -57,8 +57,19 @@ class ChillingdmcaController extends Controller
         {
             throw $this->createNotFoundException("The pages does not exist in this context");
         }
+        $em = $this->getDoctrine()->getManager();
+        $bookrepo = $em->getRepository('matuckLibraryBundle:Book');
+        /* @var $bookrepo BookRepository */
+        if(!$book = $bookrepo->find($bookid))
+        {
+            throw new \Doctrine\ORM\EntityNotFoundException();
+        }
+        /* @var $book Book */
         $dmca = new Chillingdmca();
         $form   = $this->createForm(new ChillingdmcaType(), $dmca);
+        $form->remove('createdAt');
+        $form->remove('updatedAt');
+        $form->remove('ipAddress');
         if($this->container->getParameter('matuck_library_usecaptchas'))
         {
             $form->add('captcha', 'captcha');
@@ -69,11 +80,6 @@ class ChillingdmcaController extends Controller
             $dmca->setCreatedAt(new \DateTime());
             $dmca->setUpdatedAt(new \DateTime());
             $dmca->setIpAddress($this->getRequest()->getClientIp());
-            $em = $this->getDoctrine()->getManager();
-            $bookrepo = $em->getRepository('matuckLibraryBundle:Book');
-            /* @var $bookrepo BookRepository */
-            $book = $bookrepo->find($bookid);
-            /* @var $book Book */
             $book->setIsPublic(FALSE);
             $em->persist($dmca);
             $em->persist($book);
@@ -84,7 +90,8 @@ class ChillingdmcaController extends Controller
         else
         {
             $this->get('session')->getFlashBag()->add('error', 'Failed to create the dmca take down please try again.');
-            return $this->redirect($this->generateUrl('matuck_library_chillingdmca_new', array('id' => $bookid)));
+
+            return $this->render('matuckLibraryBundle:Chillingdmca:new.html.twig', array('form' => $form->createView(), 'book' => $book));
         }
     }
     
