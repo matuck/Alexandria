@@ -31,4 +31,7 @@ parameters:
     matuck_library_googleapi_keys:
         - 'somekey1'
         - 'somkey2'
-
+    matuck_library_nsfwtags:
+        - 'tag1'
+        - 'tag2'
+    matuck_library_usecaptchas: true

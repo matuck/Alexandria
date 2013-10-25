@@ -114,6 +114,10 @@ class UploadController extends Controller
               ->add('newcover', 'file', array('required' => false))
               ->add('file_id', 'hidden')
               ->add('cover', 'hidden', array('required' => false));
+      if($this->container->getParameter('matuck_library_usecaptchas'))
+      {
+          $form->add('captcha', 'captcha');
+      }
       return $this->render('matuckLibraryBundle:Upload:file.html.twig', array('form' => $form->getForm()->createView(), 'cover' => $info['cover']));
     }
 

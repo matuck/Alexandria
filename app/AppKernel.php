@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Ivory\LuceneSearchBundle\IvoryLuceneSearchBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new matuck\LibraryBundle\matuckLibraryBundle(),
+            new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

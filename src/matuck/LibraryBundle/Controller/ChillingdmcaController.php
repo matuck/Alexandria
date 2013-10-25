@@ -44,6 +44,10 @@ class ChillingdmcaController extends Controller
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->remove('ipAddress');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         return $this->render('matuckLibraryBundle:Chillingdmca:new.html.twig', array('form' => $form->createView(), 'book' => $book));
     }
   
@@ -55,7 +59,10 @@ class ChillingdmcaController extends Controller
         }
         $dmca = new Chillingdmca();
         $form   = $this->createForm(new ChillingdmcaType(), $dmca);
-
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $form->bind($this->getRequest());
         if($form->isValid())
         {
@@ -92,6 +99,10 @@ class ChillingdmcaController extends Controller
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->remove('ipAddress');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         return $this->render('matuckLibraryBundle:Chillingdmca:edit.html.twig', array('id' => $id, 'form' => $form->createView()));
     }
     
@@ -109,6 +120,10 @@ class ChillingdmcaController extends Controller
         /* @var $dmca Chillingdmca */
         $dmca2 = new Chillingdmca();
         $form = $this->createForm(new ChillingdmcaType(), $dmca2);
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $form->bind($this->getRequest());
         if($form->isValid())
         {

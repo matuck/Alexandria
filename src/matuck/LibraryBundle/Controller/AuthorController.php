@@ -26,6 +26,10 @@ class AuthorController extends Controller
         $form   = $this->createForm(new AuthorType, $author);
         $form->remove('createdAt');
         $form->remove('updatedAt');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         if (false === $this->get('security.context')->isGranted('ROLE_ADMIN'))
         {
             $form->remove('name');
@@ -52,7 +56,10 @@ class AuthorController extends Controller
         }
         $author2 = new Author();
         $form   = $this->createForm(new AuthorType(), $author2);
-
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $form->bind($this->getRequest());
         if($form->isValid())
         {
@@ -150,6 +157,10 @@ class AuthorController extends Controller
         $form = $this->createForm(new AuthorType, $author);
         $form->remove('createdAt');
         $form->remove('updatedAt');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         return $this->render('matuckLibraryBundle:Author:edit.html.twig', array(
             'author' => $author,
             'form'   => $form->createView(),
@@ -173,6 +184,10 @@ class AuthorController extends Controller
         $form = $this->createForm(new AuthorType(), $author);
         $form->remove('createdAt');
         $form->remove('updatedAt');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $form->bind($this->getRequest());
         
         if($form->isValid())
@@ -223,6 +238,10 @@ class AuthorController extends Controller
         $form = $this->createForm(new AuthorType());
         $form->remove('createdAt');
         $form->remove('updatedAt');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $response = $this->render('matuckLibraryBundle:Author:new.html.twig', array('form' => $form->createView()));
         $response->setPublic();
         $response->setSharedMaxAge($this->container->getParameter('cache_time'));
@@ -240,6 +259,10 @@ class AuthorController extends Controller
             $em = $this->getDoctrine()->getManager();
             $author = new Author();
             $form = $this->createForm(new AuthorType(), $author);
+            if($this->container->getParameter('matuck_library_usecaptchas'))
+            {
+                $form->add('captcha', 'captcha');
+            }
             $form->bindRequest($this->getRequest());
 
             if($form->isValid())
@@ -260,6 +283,10 @@ class AuthorController extends Controller
     public function mergeAction(Author $author)
     {
         $form = $this->createForm(new mergeAuthorType($author));
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $em = $this->getDoctrine()->getManager();
         $bookrepo = $em->getRepository('matuckLibraryBundle:Book');
         /* @var $bookrepo \matuck\LibraryBundle\Entity\Bookrepository */

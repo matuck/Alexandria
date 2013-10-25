@@ -58,6 +58,10 @@ class SerieController extends Controller
         $form   = $this->createForm(new SerieType(), $entity);
         $form->remove('createdAt');
         $form->remove('updatedAt');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $response = $this->render('matuckLibraryBundle:Serie:new.html.twig', array(
             'serie' => $entity,
             'form'   => $form->createView(),
@@ -70,6 +74,10 @@ class SerieController extends Controller
     {
         $serie = new Serie();
         $form = $this->createForm(new SerieType(), $serie);
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $form->bind($request);
         if($form->isValid())
         {
@@ -107,6 +115,10 @@ class SerieController extends Controller
         $editForm = $this->createForm(new SerieType(), $serie);
         $editForm->remove('createdAt');
         $editForm->remove('updatedAt');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $editForm->add('captcha', 'captcha');
+        }
         return $this->render('matuckLibraryBundle:Serie:edit.html.twig', array(
             'serie'      => $serie,
             'edit_form'   => $editForm->createView(),
@@ -130,6 +142,10 @@ class SerieController extends Controller
         $indexer->deleteSeries($serie);
         $emptySerie = new Serie();
         $editForm = $this->createForm(new SerieType(), $emptySerie);
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $editForm->add('captcha', 'captcha');
+        }
         $editForm->bind($request);
 
         if ($editForm->isValid())

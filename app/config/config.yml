@@ -101,3 +101,6 @@ ivory_lucene_search:
         # Path to store the index (Required)
         path: %kernel.root_dir%/cache/searchindexes/master
         analyzer: Zend\Search\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive
+
+gregwar_captcha:
+    as_url: true

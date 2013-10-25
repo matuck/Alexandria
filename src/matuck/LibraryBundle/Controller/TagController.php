@@ -88,6 +88,10 @@ class TagController extends Controller
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->remove('slug');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         return $this->render('matuckLibraryBundle:Tag:edit.html.twig', array(
             'tag' => $tag,
             'form'   => $form->createView(),
@@ -115,7 +119,10 @@ class TagController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(new newTagType());
-
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $response = $this->render('matuckLibraryBundle:Tag:new.html.twig', array('form' => $form->createView()));
         $response->setPublic();
         $response->setSharedMaxAge($this->container->getParameter('cache_time'));
@@ -133,6 +140,10 @@ class TagController extends Controller
             $tagManager = $this->get('fpn_tag.tag_manager');
             /* @var $tagManager \FPN\TagBundle\Entity\TagManager */
             $form = $this->createForm(new newTagType());
+            if($this->container->getParameter('matuck_library_usecaptchas'))
+            {
+                $form->add('captcha', 'captcha');
+            }
             $form->bindRequest($this->getRequest());
 
             // data is an array with "name"
@@ -163,6 +174,10 @@ class TagController extends Controller
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->remove('slug');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $form->bind($this->getRequest());
                 
         if($form->isValid())
@@ -183,6 +198,10 @@ class TagController extends Controller
     public function mergeAction()
     {
         $form = $this->createForm(new mergeTagType());
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $em = $this->getDoctrine()->getManager();
         $taggingrepo = $em->getRepository('matuckLibraryBundle:Tagging');
         /* @var $taggingrepo \matuck\LibraryBundle\Entity\Taggingrepository */
@@ -234,6 +253,10 @@ class TagController extends Controller
         }
         //rebuild form so it gets rid of things that have been deleted.
         $form = $this->createForm(new mergeTagType());
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         return $this->render('matuckLibraryBundle:Tag:merge.html.twig', array(
             'form'   => $form->createView(),
             ));

@@ -24,3 +24,6 @@ fos_user_change_password:
 matuck_library:
     resource: "@matuckLibraryBundle/Resources/config/routing.yml"
     prefix:   /
+    
+gregwar_captcha_routing:
+    resource: "@GregwarCaptchaBundle/Resources/config/routing/routing.yml"

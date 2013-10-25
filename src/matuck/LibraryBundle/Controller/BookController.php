@@ -47,15 +47,38 @@ class BookController extends Controller
         
         $tagManager = $this->get('fpn_tag.tag_manager');
         $tagManager->loadTagging($book);
-        $response =  $this->render('matuckLibraryBundle:Book:show.html.twig', array('book' => $book, 'amazonUrl' => $amazonUrl, 'audibleUrl' => $audibleUrl));
+        
+        $form = $this->buildtagform($book);
+        $response =  $this->render('matuckLibraryBundle:Book:show.html.twig', array('book' => $book, 'tagform' => $form->getForm()->createView(), 'amazonUrl' => $amazonUrl, 'audibleUrl' => $audibleUrl));
         $response->setPublic();
         $response->setSharedMaxAge($this->container->getParameter('cache_time'));
         return $response;
     }
     
+    private function buildtagform(Book $book)
+    {
+        $form = $this->createFormBuilder();
+        $form->add('book_id', 'hidden', array('data' => $book->getId()));
+        if($this->get('security.context')->isGranted('ROLE_ADMIN'))
+        {
+            $choices = array();
+            foreach($book->getTags() as $tag)
+            {
+                $choices[$tag->getId()] = $tag->getName();
+            }
+            $form->add('removetags', 'choice', array('choices' => $choices, 'multiple' => true, 'expanded' => true,'required' => false));
+        }
+        $form->add('tags', 'text', array('required' => false));
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
+        return $form;
+    }
     public function tagaddAction()
     {
         $formdata = $this->getRequest()->get('form');
+        print_r($formdata);
         $em = $this->getDoctrine()->getEntityManager();
         $tagManager = $this->get('fpn_tag.tag_manager');
         /* @var $tagManager \FPN\TagBundle\Entity\TagManager */
@@ -79,12 +102,15 @@ class BookController extends Controller
             $tags = $tagManager->loadOrCreateTags($tags);
             $tagManager->addTags($tags, $book);
         }
-        if(isset($formdata['removetag']))
+        $tagrepo = $em->getRepository('matuckLibraryBundle:Tag');
+        
+        if(isset($formdata['removetags']))
         {
             $removetags = array();
-            foreach($formdata['removetag'] as $tag)
+            foreach($formdata['removetags'] as $tag)
             {
-                $tagManager->removeTag($tagManager->loadOrCreateTag($tag), $book);
+                $tag2 = $tagrepo->find($tag);
+                $tagManager->removeTag($tag2, $book);
             }
         }
 
@@ -104,6 +130,10 @@ class BookController extends Controller
         $form->remove('tags');
         $form->add('newcover', 'file', array("required" => false, "mapped" => false, 'label' => 'Replacement Cover'));
         $form->add('newfile', 'file', array("required" => false, "mapped" => false, 'label' => 'Replacement Epub'));
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         return $this->render('matuckLibraryBundle:Book:edit.html.twig', array(
             'book' => $book,
             'form'   => $form->createView(),
@@ -132,6 +162,10 @@ class BookController extends Controller
         $form->remove('tags');
         $form->add('newcover', 'file', array("required" => false,"mapped" => false, 'label' => 'Replacement Cover'));
         $form->add('newfile', 'file', array("required" => false, "mapped" => false, 'label' => 'Replacement Epub'));
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $form->bind($this->getRequest());
         if($form->isValid())
         {

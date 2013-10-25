@@ -161,6 +161,10 @@ class FlagsController extends Controller
     {
         $entity  = new Flags();
         $form = $this->createForm(new FlagsType(), $entity);
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         $form->bind($request);
 
         if ($form->isValid())
@@ -195,6 +199,10 @@ class FlagsController extends Controller
         $form->remove('createdAt');
         $form->remove('updatedAt');
         $form->remove('complete');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $form->add('captcha', 'captcha');
+        }
         return $this->render('matuckLibraryBundle:Flags:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView(),
@@ -244,6 +252,10 @@ class FlagsController extends Controller
         $editForm->remove('book');
         $editForm->remove('createdAt');
         $editForm->remove('updatedAt');
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $editForm->add('captcha', 'captcha');
+        }
         return $this->render('matuckLibraryBundle:Flags:edit.html.twig', array(
             'entity'      => $entity,
             'edit_form'   => $editForm->createView(),
@@ -266,6 +278,10 @@ class FlagsController extends Controller
         /* @var $entity Flags */
         $emptyflag = new Flags();
         $editForm = $this->createForm(new FlagsType(), $emptyflag);
+        if($this->container->getParameter('matuck_library_usecaptchas'))
+        {
+            $editForm->add('captcha', 'captcha');
+        }
         $editForm->bind($request);
 
         if ($editForm->isValid())
