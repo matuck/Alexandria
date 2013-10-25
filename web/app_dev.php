@@ -3,6 +3,22 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
+
+// Fix IP for cloudflare
+if (isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+    $_SERVER['HTTP_X_FORWARDED_FOR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+    $_SERVER['HTTP_CLIENT_IP'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+    $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+}
+
+// Fix SSL for cloudflare
+if (isset($_SERVER['HTTP_CF_VISITOR'])) {
+    if (preg_match('/https/i', $_SERVER['HTTP_CF_VISITOR'])) {
+        $_SERVER['HTTPS'] = 'On';
+        $_SERVER['HTTP_X_FORWARDED_PORT'] = 443;
+        $_SERVER['SERVER_PORT'] = 443;
+    }
+}
 // If you don't want to setup permissions the proper way, just uncomment the following PHP line
 // read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
 //umask(0000);
