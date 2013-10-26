@@ -8,10 +8,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FlagsType extends AbstractType
 {
+    private $types;
+    public function __construct(array $types)
+    {
+        foreach($types as $type)
+        {
+            $this->types[$type] = $type;
+        }
+//        parent::__construct();
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type', 'choice', array('choices' => array('File' => 'File', 'Cover' => 'Cover', 'Metadata' => 'Metadata', 'Copyright' => 'Copyright', 'Other' => 'Other')))
+            ->add('type', 'choice', array('choices' => $this->types))
             ->add('title')
             ->add('complete')
             ->add('createdAt')

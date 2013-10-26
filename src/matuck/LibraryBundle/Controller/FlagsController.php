@@ -50,11 +50,10 @@ class FlagsController extends Controller
                 //load default values since cookie did not load
                 $filters['open'] = 1;
                 $filters['close'] = 1;
-                $filters['file'] = 1;
-                $filters['cover'] = 1;
-                $filters['metadata'] = 1;
-                $filters['copyright'] = 1;
-                $filters['other'] = 1;
+                foreach($this->container->getParameter('matuck_library_flagstype') as $type)
+                {
+                    $filters[strtolower($type)] = 1;
+                }
                 $filters['startdate'] = '';
                 $filters['enddate'] = '';
             }
@@ -77,45 +76,16 @@ class FlagsController extends Controller
         {
             $filters_form->add('close', 'checkbox', array('label' => 'Close', 'required' => FALSE));
         }
-        if($filters['file'])
+        foreach($this->container->getParameter('matuck_library_flagstype') as $type)
         {
-            $filters_form->add('file', 'checkbox', array('attr' => array('checked' => 'checked'), 'label' => 'File', 'required' => FALSE));
-        }
-        else
-        {
-            $filters_form->add('file', 'checkbox', array('label' => 'File', 'required' => FALSE));
-        }
-        if($filters['cover'])
-        {
-            $filters_form->add('cover', 'checkbox', array('attr' => array('checked' => 'checked'), 'label' => 'Cover', 'required' => FALSE));
-        }
-        else
-        {
-            $filters_form->add('cover', 'checkbox', array('label' => 'Cover', 'required' => FALSE));
-        }
-        if($filters['metadata'])
-        {
-            $filters_form->add('metadata', 'checkbox', array('attr' => array('checked' => 'checked'), 'label' => 'Metadata', 'required' => FALSE));
-        }
-        else
-        {
-            $filters_form->add('metadata', 'checkbox', array('label' => 'Metadata', 'required' => FALSE));
-        }
-        if($filters['copyright'])
-        {
-            $filters_form->add('copyright', 'checkbox', array('attr' => array('checked' => 'checked'), 'label' => 'Copyright', 'required' => FALSE));
-        }
-        else
-        {
-            $filters_form->add('copyright', 'checkbox', array('label' => 'Copyright', 'required' => FALSE));
-        }
-        if($filters['other'])
-        {
-            $filters_form->add('other', 'checkbox', array('attr' => array('checked' => 'checked'), 'label' => 'Other', 'required' => FALSE));
-        }
-        else
-        {
-            $filters_form->add('other', 'checkbox', array('label' => 'Other', 'required' => FALSE));
+            if($filters[strtolower($type)])
+            {
+                $filters_form->add(strtolower($type), 'checkbox', array('attr' => array('checked' => 'checked'), 'label' => $type, 'required' => FALSE));
+            }
+            else
+            {
+                $filters_form->add(strtolower($type), 'checkbox', array('label' => $type, 'required' => FALSE));
+            }
         }
         if($filters['startdate'] != '' && $filters['startdate'] != NULL)
         {
@@ -160,7 +130,7 @@ class FlagsController extends Controller
     public function createAction(Request $request, $id)
     {
         $entity  = new Flags();
-        $form = $this->createForm(new FlagsType(), $entity);
+        $form = $this->createForm(new FlagsType($this->container->getParameter('matuck_library_flagstype')), $entity);
         if($this->container->getParameter('matuck_library_usecaptchas'))
         {
             $form->add('captcha', 'captcha');
@@ -194,7 +164,7 @@ class FlagsController extends Controller
     public function newAction($id)
     {
         $entity = new Flags();
-        $form   = $this->createForm(new FlagsType(), $entity);
+        $form   = $this->createForm(new FlagsType($this->container->getParameter('matuck_library_flagstype')), $entity);
         $form->remove('book');
         $form->remove('createdAt');
         $form->remove('updatedAt');
@@ -248,7 +218,7 @@ class FlagsController extends Controller
             throw $this->createNotFoundException('Unable to find Flags entity.');
         }
 
-        $editForm = $this->createForm(new FlagsType(), $entity);
+        $editForm = $this->createForm(new FlagsType($this->container->getParameter('matuck_library_flagstype')), $entity);
         $editForm->remove('book');
         $editForm->remove('createdAt');
         $editForm->remove('updatedAt');
