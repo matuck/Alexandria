@@ -19,6 +19,7 @@ framework:
     trusted_proxies: ['127.0.0.1']
     session:         ~
     fragments:       ~
+    http_method_override: true
 
 # Twig Configuration
 twig:
@@ -29,7 +30,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+    bundles:        [ 'FOSCommentBundle' ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -104,3 +105,21 @@ ivory_lucene_search:
 
 gregwar_captcha:
     as_url: true
+    
+fos_comment:
+    db_driver: orm
+    class:
+        model:
+            comment: matuck\LibraryBundle\Entity\Comment
+            thread: matuck\LibraryBundle\Entity\Thread
+    acl: true
+    service:
+        acl:
+            thread:  fos_comment.acl.thread.roles
+            comment: fos_comment.acl.comment.roles
+            vote:    fos_comment.acl.vote.roles
+        manager:
+            thread:  fos_comment.manager.thread.acl
+            comment: fos_comment.manager.comment.acl
+            vote:    fos_comment.manager.vote.acl
+    

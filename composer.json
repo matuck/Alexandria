@@ -29,7 +29,8 @@
         "excelwebzone/zend-search": "dev-master",
 	"doctrine/migrations": "dev-master",
 	"doctrine/doctrine-migrations-bundle": "dev-master",
-        "gregwar/captcha-bundle": "dev-master"
+        "gregwar/captcha-bundle": "dev-master",
+        "friendsofsymfony/comment-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
