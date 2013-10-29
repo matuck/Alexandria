@@ -27,6 +27,10 @@ services:
         arguments:
              index: "@ivory_lucene_search"
              fpntag: "@fpn_tag.tag_manager"
+    app_comment.form_type.comment:
+        class: matuck\LibraryBundle\Form\CommentType
+        arguments: ["@security.context", "%matuck_library_usecaptchas%"]
+        tags: [{ name: form.type, alias: app_comment }]
 #    matuck_library.example:
 #        class: %matuck_library.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

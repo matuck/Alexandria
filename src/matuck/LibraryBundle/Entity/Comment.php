@@ -35,6 +35,21 @@ class Comment extends BaseComment implements SignedCommentInterface
      */
     protected $author;
     
+    /**
+     * @ORM\Column(name="username", type="string", length=255, nullable=true)
+     */
+    protected $username;
+    
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+    
+    public function getUsername()
+    {
+        return $this->username;
+    }
+    
     public function setAuthor(UserInterface $author)
     {
         $this->author = $author;
@@ -48,7 +63,14 @@ class Comment extends BaseComment implements SignedCommentInterface
     public function getAuthorName()
     {
         if (null === $this->getAuthor()) {
-            return 'Anonymous';
+            if($this->username == '' || $this->username === null)
+            {
+                return 'Anonymous';
+            }
+            else
+            {
+                return $this->username;
+            }
         }
 
         return $this->getAuthor()->getUsername();

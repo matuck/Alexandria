@@ -56,8 +56,8 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
-        metadata_cache_driver: apc
-        query_cache_driver: apc
+        #metadata_cache_driver: apc
+        #query_cache_driver: apc
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%
@@ -113,6 +113,9 @@ fos_comment:
             comment: matuck\LibraryBundle\Entity\Comment
             thread: matuck\LibraryBundle\Entity\Thread
     acl: true
+    form:
+        comment:
+            type: app_comment
     service:
         acl:
             thread:  fos_comment.acl.thread.roles
