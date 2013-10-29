@@ -135,6 +135,10 @@ class FlagsController extends Controller
         {
             $form->add('captcha', 'captcha');
         }
+        $form->remove('book');
+        $form->remove('createdAt');
+        $form->remove('updatedAt');
+        $form->remove('complete');
         $form->bind($request);
 
         if ($form->isValid())
