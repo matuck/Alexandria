@@ -1,0 +1,11 @@
+<OpenSearchDescription>
+<ShortName>Alexandria</ShortName>
+<Description>
+Book Library Management system.
+</Description>
+<InputEncoding>UTF-8</InputEncoding>
+<OutputEncoding>UTF-8</OutputEncoding>
+<Image type="image/x-icon" width="16" height="16">{{ path('matuck_library_homepage') }}favicon.ico</Image>
+<Url type="application/atom+xml" template="{{ path('matuck_library_catalog_search')}}/{searchTerms}"/>
+<Query role="example" searchTerms="robot"/>
+</OpenSearchDescription>

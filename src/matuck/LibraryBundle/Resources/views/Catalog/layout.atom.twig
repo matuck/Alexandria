@@ -2,8 +2,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   {% block links %}{% endblock %}
   <link rel="search"
-        href="{{ path('matuck_library_catalog_search') }}/{searchTerms}"
-        type="application/atom+xml"
+        href="{{ path('matuck_library_catalog_opensearch') }}"
+        type="application/opensearchdescription+xml"
         title="Search Catalog"  />
   {% block pager %}{% endblock %}
   {% block title %}<title>{{ title }}</title>{% endblock %}

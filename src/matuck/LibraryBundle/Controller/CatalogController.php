@@ -37,6 +37,11 @@ class CatalogController extends Controller
         return $response;
     }
     
+    public function opensearchAction()
+    {
+        return $this->render('matuckLibraryBundle:Catalog:opensearch.atom.twig');
+    }
+    
     public function newAction()
     {
         $title = $this->container->getParameter('matuck_library_sitetitle');

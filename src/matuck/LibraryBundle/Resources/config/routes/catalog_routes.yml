@@ -1,6 +1,9 @@
 matuck_library_catalog:
     pattern: /
     defaults: { _controller: matuckLibraryBundle:Catalog:index }
+matuck_library_catalog_opensearch:
+    pattern: /opensearch.xml
+    defaults: { _controller: matuckLibraryBundle:Catalog:opensearch }
 matuck_library_catalog_search:
     pattern: /search/terms
 matuck_library_catalog_searchresults:
