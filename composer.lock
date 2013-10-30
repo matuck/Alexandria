@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "fa1e751892cbea62049ba4f36d9c15f1",
+    "hash": "8158d447197501faeafb4e4499dd7624",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -78,16 +78,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "d0e4447707a064a5814b18cb0dcc2f24185f6179"
+                "reference": "e16d7adf45664a50fa86f515b6d5e7f670130449"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/d0e4447707a064a5814b18cb0dcc2f24185f6179",
-                "reference": "d0e4447707a064a5814b18cb0dcc2f24185f6179",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/e16d7adf45664a50fa86f515b6d5e7f670130449",
+                "reference": "e16d7adf45664a50fa86f515b6d5e7f670130449",
                 "shasum": ""
             },
             "require": {
@@ -95,6 +95,10 @@
             },
             "conflict": {
                 "doctrine/common": ">2.2,<2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=3.7",
+                "satooshi/php-coveralls": "~0.6"
             },
             "type": "library",
             "extra": {
@@ -143,7 +147,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2013-09-26 19:23:25"
+            "time": "2013-10-25 19:04:14"
         },
         {
             "name": "doctrine/collections",
@@ -894,12 +898,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSCommentBundle.git",
-                "reference": "9e7ab50494417afce453d1eca16f6f7d9b939ef7"
+                "reference": "727d018c8840ecb4c22fe201e7672a6e1d6cb573"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCommentBundle/zipball/9e7ab50494417afce453d1eca16f6f7d9b939ef7",
-                "reference": "9e7ab50494417afce453d1eca16f6f7d9b939ef7",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSCommentBundle/zipball/727d018c8840ecb4c22fe201e7672a6e1d6cb573",
+                "reference": "727d018c8840ecb4c22fe201e7672a6e1d6cb573",
                 "shasum": ""
             },
             "require": {
@@ -962,7 +966,7 @@
                 "forum",
                 "threads"
             ],
-            "time": "2013-10-17 12:43:40"
+            "time": "2013-10-26 23:01:00"
         },
         {
             "name": "friendsofsymfony/rest",
@@ -1734,6 +1738,65 @@
                 "minification"
             ],
             "time": "2013-07-19 00:03:27"
+        },
+        {
+            "name": "liip/cache-control-bundle",
+            "version": "dev-master",
+            "target-dir": "Liip/CacheControlBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liip/LiipCacheControlBundle.git",
+                "reference": "e401469dc6839994a6cd7810319b479b961c6571"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liip/LiipCacheControlBundle/zipball/e401469dc6839994a6cd7810319b479b961c6571",
+                "reference": "e401469dc6839994a6cd7810319b479b961c6571",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": "~2.1"
+            },
+            "require-dev": {
+                "ext-curl": "*"
+            },
+            "suggest": {
+                "ext-curl": "Used by Varnish Helper to construct requests."
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Liip\\CacheControlBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/liip/LiipThemeBundle/contributors"
+                },
+                {
+                    "name": "Liip AG",
+                    "homepage": "http://www.liip.ch/"
+                }
+            ],
+            "description": "This Bundle provides a way to set path based cache expiration headers via the app configuration and provides a helper to control the reverse proxy varnish.",
+            "keywords": [
+                "caching",
+                "esi",
+                "http",
+                "varnish"
+            ],
+            "time": "2013-10-09 20:43:28"
         },
         {
             "name": "liip/theme-bundle",
@@ -2636,20 +2699,20 @@
         },
         {
             "name": "twig/extensions",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig-extensions.git",
-                "reference": "921799aaf05f88af749d72912d6b154dfeb9a03e"
+                "reference": "f91a82ec225e5bb108e01a0f93c9be04f84dcfa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig-extensions/zipball/921799aaf05f88af749d72912d6b154dfeb9a03e",
-                "reference": "921799aaf05f88af749d72912d6b154dfeb9a03e",
+                "url": "https://api.github.com/repos/fabpot/Twig-extensions/zipball/f91a82ec225e5bb108e01a0f93c9be04f84dcfa0",
+                "reference": "f91a82ec225e5bb108e01a0f93c9be04f84dcfa0",
                 "shasum": ""
             },
             "require": {
-                "twig/twig": "1.*"
+                "twig/twig": "~1.0"
             },
             "type": "library",
             "extra": {
@@ -2679,7 +2742,7 @@
                 "i18n",
                 "text"
             ],
-            "time": "2013-02-28 14:21:30"
+            "time": "2013-10-18 19:37:15"
         },
         {
             "name": "twig/twig",
@@ -2737,18 +2800,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/whiteoctober/WhiteOctoberPagerfantaBundle.git",
-                "reference": "f4e0d801d70a8f0ee3ccb9533f62cb4a3e1b7dbe"
+                "reference": "18ac070194cef0d9e024bec050301cbf3122c787"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/whiteoctober/WhiteOctoberPagerfantaBundle/zipball/f4e0d801d70a8f0ee3ccb9533f62cb4a3e1b7dbe",
-                "reference": "f4e0d801d70a8f0ee3ccb9533f62cb4a3e1b7dbe",
+                "url": "https://api.github.com/repos/whiteoctober/WhiteOctoberPagerfantaBundle/zipball/18ac070194cef0d9e024bec050301cbf3122c787",
+                "reference": "18ac070194cef0d9e024bec050301cbf3122c787",
                 "shasum": ""
             },
             "require": {
                 "pagerfanta/pagerfanta": "1.0.*",
-                "symfony/framework-bundle": "~2.1",
-                "symfony/property-access": "~2.2"
+                "symfony/framework-bundle": "~2.2",
+                "symfony/property-access": "~2.2",
+                "symfony/twig-bundle": "~2.2"
+            },
+            "require-dev": {
+                "symfony/symfony": "~2.2"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -2777,7 +2844,7 @@
                 "page",
                 "paging"
             ],
-            "time": "2013-10-23 21:31:01"
+            "time": "2013-10-28 14:55:41"
         },
         {
             "name": "willdurand/negotiation",
@@ -2848,7 +2915,8 @@
         "doctrine/migrations": 20,
         "doctrine/doctrine-migrations-bundle": 20,
         "gregwar/captcha-bundle": 20,
-        "friendsofsymfony/comment-bundle": 20
+        "friendsofsymfony/comment-bundle": 20,
+        "liip/cache-control-bundle": 20
     },
     "platform": {
         "php": ">=5.3.3"

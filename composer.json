@@ -30,7 +30,8 @@
 	"doctrine/migrations": "dev-master",
 	"doctrine/doctrine-migrations-bundle": "dev-master",
         "gregwar/captcha-bundle": "dev-master",
-        "friendsofsymfony/comment-bundle": "dev-master"
+        "friendsofsymfony/comment-bundle": "dev-master",
+        "liip/cache-control-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

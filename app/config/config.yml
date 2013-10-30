@@ -125,4 +125,6 @@ fos_comment:
             thread:  fos_comment.manager.thread.acl
             comment: fos_comment.manager.comment.acl
             vote:    fos_comment.manager.vote.acl
-    
+liip_cache_control:
+      rules:
+          - { controller: ^GregwarCaptchaBundle:Captcha:generateCaptcha$, controls: [ no-cache ], vary: [Accept-Encoding, Accept-Language] }
