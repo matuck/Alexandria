@@ -25,8 +25,8 @@ class ConvertDownloadsCommand extends ContainerAwareCommand
         $conn = $this->getContainer()->get('doctrine')->getManager()->getConnection();
         /* @var $conn \Doctrine\DBAL\Connection */
         echo "Adding downloads table book counts to the book.\n\n";
-        $conn->executeQuery('UPDATE book SET book.downcount = IFNULL(book.downcount, 0) + ( SELECT COUNT( d.book_id ) FROM download d WHERE (SELECT MAX day FROm dailydownloads) AND d.book_id = book.id )');
-        $res = $conn->executeQuery('SELECT DATE(created_at) date, count(*) as dcount FROM download WHERE day > (SELECT MAX day FROm dailydownloads) GROUP BY DATE(created_at)')
+        $conn->executeQuery('UPDATE book SET book.downcount = IFNULL(book.downcount, 0) + ( SELECT COUNT( d.book_id ) FROM download d WHERE (SELECT MAX day FROM dailydownloads) AND d.book_id = book.id )');
+        $res = $conn->executeQuery('SELECT DATE(created_at) date, count(*) as dcount FROM download WHERE day > (SELECT MAX day FROM dailydownloads) GROUP BY DATE(created_at)')
                 ->fetchAll();
         foreach($res as $day)
         {
