@@ -17,7 +17,8 @@ framework:
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ['127.0.0.1']
-    session:         ~
+    session:
+        save_path: %session_save_path%
     fragments:       ~
     http_method_override: true
 

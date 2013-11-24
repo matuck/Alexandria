@@ -12,7 +12,7 @@ parameters:
     mailer_password: null
     locale: en
     secret: ThisTokenIsNotSoSecretChangeIt
-
+    session_save_path: %kernel.cache.dir%/sessions
     liip_themes: ['default']
     liip_active_theme: 'default'
     liip_autodetect_theme: true
